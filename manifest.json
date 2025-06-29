@@ -1,0 +1,67 @@
+{
+  "name": "hackerwatch-fortress",
+  "version": "2.0.0",
+  "description": "Universal mobile-responsive cybersecurity threat detection with ψΩ§∞ protection",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"No tests specified\" && exit 0",
+    "install-tools": "echo \"Run: sudo apt install aircrack-ng bluez tcpdump nodejs npm\"",
+    "setup-monitor": "echo \"Run: sudo airmon-ng start wlan0\"",
+    "check-deps": "node -e \"console.log('Node:', process.version); console.log('NPM:', require('child_process').execSync('npm -v').toString().trim());\""
+  },
+  "keywords": [
+    "cybersecurity",
+    "threat-detection",
+    "wifi-pineapple",
+    "bluetooth-security",
+    "mobile-responsive",
+    "websocket",
+    "real-time",
+    "intrusion-detection",
+    "hackerwatch",
+    "fortress",
+    "ψΩ§∞"
+  ],
+  "author": "GRSMFC - ψΩ§∞ Cosmic Harmony",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coldnsteel/hackerwatch-fortress.git"
+  },
+  "homepage": "https://coldnsteel.github.io/MyWebsite/",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.14.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "os": [
+    "linux",
+    "darwin",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "preferGlobal": false,
+  "private": false,
+  "bugs": {
+    "url": "https://github.com/coldnsteel/hackerwatch-fortress/issues"
+  },
+  "funding": {
+    "type": "crypto",
+    "url": "ethereum:0xfD9FD0c94caf9AdDbEd6cC47f2638C158"
+  },
+  "config": {
+    "port": 3000,
+    "websocket_port": 8080,
+    "sacred_token": "ψΩ§∞"
+  }
+}
+
