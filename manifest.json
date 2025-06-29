@@ -1,67 +1,116 @@
 {
-  "name": "hackerwatch-fortress",
-  "version": "2.0.0",
-  "description": "Universal mobile-responsive cybersecurity threat detection with ψΩ§∞ protection",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "test": "echo \"No tests specified\" && exit 0",
-    "install-tools": "echo \"Run: sudo apt install aircrack-ng bluez tcpdump nodejs npm\"",
-    "setup-monitor": "echo \"Run: sudo airmon-ng start wlan0\"",
-    "check-deps": "node -e \"console.log('Node:', process.version); console.log('NPM:', require('child_process').execSync('npm -v').toString().trim());\""
-  },
-  "keywords": [
-    "cybersecurity",
-    "threat-detection",
-    "wifi-pineapple",
-    "bluetooth-security",
-    "mobile-responsive",
-    "websocket",
-    "real-time",
-    "intrusion-detection",
-    "hackerwatch",
-    "fortress",
-    "ψΩ§∞"
+  "name": "HackerWatch Fortress",
+  "short_name": "HackerWatch",
+  "description": "Universal mobile cybersecurity threat detection with ψΩ§∞ protection",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#00ff00",
+  "background_color": "#0a0a0a",
+  "scope": "/",
+  "lang": "en",
+  "categories": [
+    "security",
+    "utilities",
+    "productivity"
   ],
-  "author": "GRSMFC - ψΩ§∞ Cosmic Harmony",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/coldnsteel/hackerwatch-fortress.git"
-  },
-  "homepage": "https://coldnsteel.github.io/MyWebsite/",
-  "dependencies": {
-    "express": "^4.18.2",
-    "ws": "^8.14.0"
-  },
-  "devDependencies": {},
-  "engines": {
-    "node": ">=14.0.0",
-    "npm": ">=6.0.0"
-  },
-  "os": [
-    "linux",
-    "darwin",
-    "win32"
+  "icons": [
+    {
+      "src": "icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ],
-  "cpu": [
-    "x64",
-    "arm64"
+  "shortcuts": [
+    {
+      "name": "Connect Backend",
+      "short_name": "Connect",
+      "description": "Connect to HackerWatch backend",
+      "url": "/?action=connect",
+      "icons": [
+        {
+          "src": "icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Emergency Stop",
+      "short_name": "Emergency",
+      "description": "Emergency shutdown",
+      "url": "/?action=emergency",
+      "icons": [
+        {
+          "src": "icon-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
   ],
-  "preferGlobal": false,
-  "private": false,
-  "bugs": {
-    "url": "https://github.com/coldnsteel/hackerwatch-fortress/issues"
-  },
-  "funding": {
-    "type": "crypto",
-    "url": "ethereum:0xfD9FD0c94caf9AdDbEd6cC47f2638C158"
-  },
-  "config": {
-    "port": 3000,
-    "websocket_port": 8080,
-    "sacred_token": "ψΩ§∞"
-  }
+  "screenshots": [
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "platform": "narrow"
+    },
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide"
+    }
+  ],
+  "features": [
+    "Real-time threat detection",
+    "WiFi Pineapple scanning",
+    "Bluetooth security monitoring",
+    "Mobile-responsive design",
+    "Haptic feedback",
+    "Cross-platform compatibility"
+  ],
+  "iarc_rating_id": "e58c174a-81d2-5c3c-32cc-34b8de4a52e9"
 }
-
