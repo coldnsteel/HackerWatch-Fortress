@@ -269,9 +269,9 @@
                 <div>Latency: <span id="latency">8ms</span></div>
             </div>
             <div class="threat-scanner">
-                <div><strong>Intrusion Attempts:</strong> <span id="intrusion-count">23</span></div>
-                <div><strong>Last Blocked:</strong> <span id="last-blocked">2 min ago</span></div>
-                <div><strong>Uptime:</strong> <span id="uptime">4h 23m</span></div>
+                <div><strong>Intrusion Attempts:</strong> <span id="intrusion-count">${intrusionCount}</span></div>
+                <div><strong>Last Blocked:</strong> <span id="last-blocked">Initializing...</span></div>
+                <div><strong>Uptime:</strong> <span id="uptime">Starting...</span></div>
             </div>
             <button class="control-btn dev" onclick="optimizeNetwork()">⚡ OPTIMIZE</button>
             <button class="control-btn dev" onclick="exportNetworkData()">📊 EXPORT DATA</button>
@@ -432,10 +432,14 @@
         function runDiagnostics() {
             addLog('🔧 Running fortress diagnostics...', 'dev');
             
+            const cpuLoad = Math.floor(Math.random() * 25) + 10;
+            const memUsage = (Math.random() * 3 + 1.5).toFixed(1);
+            const temp = Math.floor(Math.random() * 15) + 40;
+            
             const diagnostics = [
-                '💾 Memory usage: 2.1GB / 16GB',
-                '💻 CPU load: 18%',
-                '🌡️ Temperature: 45°C',
+                `💾 Memory usage: ${memUsage}GB / 16GB`,
+                `💻 CPU load: ${cpuLoad}%`,
+                `🌡️ Temperature: ${temp}°C`,
                 '🔋 Power: Stable',
                 '📡 Network: GitHub Pages Optimal',
                 '🛡️ Shield integrity: 100%',
@@ -600,13 +604,33 @@ Sacred Token: ψΩ§∞ ACTIVE
             // Start monitoring
             toggleMonitoring();
             
-            // Update uptime counter
+            // Update uptime counter - REAL TIME
             setInterval(() => {
-                uptimeMinutes++;
-                const hours = Math.floor(uptimeMinutes / 60);
-                const minutes = uptimeMinutes % 60;
+                const currentTime = Date.now();
+                const uptimeMs = currentTime - startTime;
+                const hours = Math.floor(uptimeMs / (1000 * 60 * 60));
+                const minutes = Math.floor((uptimeMs % (1000 * 60 * 60)) / (1000 * 60));
                 document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
-            }, 60000);
+            }, 30000); // Update every 30 seconds
+            
+            // Update blocked total and last blocked - DYNAMIC
+            setInterval(() => {
+                if (Math.random() > 0.6) { // 40% chance per interval
+                    blockedTotal++;
+                    intrusionCount++;
+                    document.getElementById('blocked-total').textContent = blockedTotal.toLocaleString();
+                    document.getElementById('intrusion-count').textContent = intrusionCount;
+                    document.getElementById('last-blocked').textContent = 'Just now';
+                    
+                    if (verboseLogging) {
+                        addLog(`🛡️ Real-time block: Intrusion #${intrusionCount}`, 'warning');
+                    }
+                } else {
+                    // Update "last blocked" to show time elapsed
+                    const randomTime = Math.floor(Math.random() * 10) + 1;
+                    document.getElementById('last-blocked').textContent = `${randomTime} min ago`;
+                }
+            }, 45000); // Every 45 seconds
             
             // Periodic status updates
             setInterval(() => {
