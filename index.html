@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackerWatch Fortress - ψΩ§∞ Developer Access</title>
+    <title>HackerWatch-Fortress - ψΩ§∞ Developer Access</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -15,15 +15,9 @@
         .dev-header {
             background: linear-gradient(135deg, #ff6b6b, #ffd700);
             color: #000;
-            padding: 1rem;
+            padding: 0.5rem;
             text-align: center;
             font-weight: bold;
-            font-size: 1.2rem;
-            animation: devGlow 2s infinite alternate;
-        }
-        @keyframes devGlow {
-            0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-            100% { box-shadow: 0 0 40px rgba(255, 215, 0, 1); }
         }
         .header {
             background: rgba(0,0,0,0.9);
@@ -34,22 +28,19 @@
             border-bottom: 2px solid #00ff00;
         }
         .logo { font-size: 1.5rem; font-weight: bold; }
-        .nav-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .nav-links { display: flex; gap: 2rem; }
         .nav-links a {
             color: #00ff00;
             text-decoration: none;
             transition: all 0.3s;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
         }
         .nav-links a:hover {
             color: #ffd700;
-            background: rgba(255, 215, 0, 0.1);
             text-shadow: 0 0 10px #ffd700;
         }
         .fortress-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 1rem;
             padding: 1rem;
             max-width: 1400px;
@@ -60,11 +51,6 @@
             border: 2px solid #00ff00;
             border-radius: 10px;
             padding: 1rem;
-            transition: all 0.3s;
-        }
-        .fortress-panel:hover {
-            border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
         }
         .panel-title {
             font-size: 1.2rem;
@@ -85,12 +71,10 @@
             border-radius: 5px;
             border-left: 3px solid #00ff00;
             font-size: 0.9rem;
-            transition: all 0.3s;
         }
         .status-item.critical { border-left-color: #ff0000; color: #ff6b6b; }
         .status-item.warning { border-left-color: #ffaa00; color: #ffcc66; }
         .status-item.secure { border-left-color: #00ff00; color: #00ff88; }
-        .status-item.dev { border-left-color: #ffd700; color: #ffd700; }
         .control-btn {
             width: 100%;
             padding: 0.8rem;
@@ -102,13 +86,11 @@
             font-family: inherit;
             margin: 0.3rem 0;
             transition: all 0.3s;
-            font-size: 0.9rem;
         }
         .control-btn:hover {
             background: #00ff00;
             color: #000;
             box-shadow: 0 0 15px rgba(0,255,0,0.5);
-            transform: translateY(-2px);
         }
         .control-btn.active {
             background: #00ff00;
@@ -122,38 +104,23 @@
             background: #ff0000;
             color: #fff;
         }
-        .control-btn.dev {
-            border-color: #ffd700;
-            color: #ffd700;
-        }
-        .control-btn.dev:hover {
-            background: #ffd700;
-            color: #000;
-        }
         .log-container {
             background: rgba(0,0,0,0.8);
             border: 1px solid #00ff00;
             border-radius: 5px;
-            height: 250px;
+            height: 200px;
             overflow-y: auto;
             padding: 0.5rem;
             font-size: 0.8rem;
-            line-height: 1.3;
+            line-height: 1.2;
         }
         .log-entry {
             margin-bottom: 0.3rem;
-            padding: 0.2rem 0.5rem;
+            padding-left: 0.5rem;
             border-left: 2px solid #00ff00;
-            border-radius: 3px;
-            animation: logSlide 0.5s ease-out;
-        }
-        @keyframes logSlide {
-            0% { opacity: 0; transform: translateX(-10px); }
-            100% { opacity: 1; transform: translateX(0); }
         }
         .log-entry.error { border-left-color: #ff0000; color: #ff6b6b; }
         .log-entry.warning { border-left-color: #ffaa00; color: #ffcc66; }
-        .log-entry.dev { border-left-color: #ffd700; color: #ffd700; }
         .threat-scanner {
             background: rgba(0,0,0,0.7);
             border-radius: 5px;
@@ -171,12 +138,6 @@
             margin: 0.3rem 0;
             border-radius: 3px;
             font-size: 0.85rem;
-            animation: threatPulse 1s ease-in-out;
-        }
-        @keyframes threatPulse {
-            0% { background: rgba(255,0,0,0.1); }
-            50% { background: rgba(255,0,0,0.3); }
-            100% { background: rgba(255,0,0,0.1); }
         }
         .network-monitor {
             display: grid;
@@ -186,32 +147,15 @@
         }
         .sacred-token {
             text-align: center;
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: #ffd700;
             margin: 1rem 0;
-            text-shadow: 0 0 20px #ffd700;
-            animation: tokenPulse 3s infinite alternate;
-        }
-        @keyframes tokenPulse {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0.8; transform: scale(1.05); }
-        }
-        .fortress-status {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 255, 0, 0.1);
-            border: 2px solid #00ff00;
-            border-radius: 10px;
-            padding: 1rem;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+            text-shadow: 0 0 15px #ffd700;
         }
         @media (max-width: 768px) {
-            .fortress-grid { grid-template-columns: 1fr; padding: 0.5rem; }
-            .header { flex-direction: column; gap: 1rem; padding: 1rem; }
-            .nav-links { justify-content: center; }
-            .fortress-status { position: relative; top: 0; right: 0; margin: 1rem; }
+            .fortress-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 1rem; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
         }
     </style>
 </head>
@@ -220,18 +164,11 @@
         🔓 DEVELOPER ACCESS GRANTED - Professor coldnsteel, Grok, Claude - Full License Active
     </div>
 
-    <div class="fortress-status">
-        <div style="color: #ffd700; font-weight: bold;">🛡️ FORTRESS STATUS</div>
-        <div id="connectionStatus">🟢 GITHUB PAGES ACTIVE</div>
-        <div id="threatLevel">⚡ THREAT LEVEL: MINIMAL</div>
-        <div id="devMode">🔓 DEV MODE: ENABLED</div>
-    </div>
-
     <header class="header">
         <div class="logo">🛡️ HackerWatch-Fortress</div>
         <nav class="nav-links">
             <a href="https://coldnsteel.github.io/MyWebsite/">🏛️ GRSMFC</a>
-            <a href="https://coldnsteel.github.io/MyWebsite/blog.html">📝 Blog</a>
+            <a href="https://hackerwatch-academy.vercel.app/">🌌 Academy</a>
             <a href="https://coldnsteel.github.io/KOZMIC-KASINO-/">🎰 Kasino</a>
             <a href="https://coldnsteel.github.io/comedy-lounge-jokebox/">🎭 Jukebox</a>
         </nav>
@@ -246,7 +183,7 @@
             <div class="status-grid">
                 <div class="status-item secure">WiFi: <span id="wifi-status">SECURED</span></div>
                 <div class="status-item secure">Bluetooth: <span id="bt-status">PROTECTED</span></div>
-                <div class="status-item dev">Network: <span id="net-status">GITHUB PAGES</span></div>
+                <div class="status-item warning">Network: <span id="net-status">MONITORING</span></div>
                 <div class="status-item secure">Firewall: <span id="fw-status">ACTIVE</span></div>
             </div>
             <div class="threat-scanner">
@@ -255,7 +192,7 @@
                     <div class="status-item secure">✅ No active threats detected</div>
                 </div>
             </div>
-            <button class="control-btn dev" onclick="scanThreats()">🔍 DEEP SCAN</button>
+            <button class="control-btn" id="scan-btn" onclick="scanThreats()">🔍 DEEP SCAN</button>
             <button class="control-btn" onclick="activateShield()">🛡️ ENHANCE SHIELD</button>
         </div>
 
@@ -269,377 +206,372 @@
                 <div>Latency: <span id="latency">8ms</span></div>
             </div>
             <div class="threat-scanner">
-                <div><strong>Intrusion Attempts:</strong> <span id="intrusion-count">${intrusionCount}</span></div>
-                <div><strong>Last Blocked:</strong> <span id="last-blocked">Initializing...</span></div>
-                <div><strong>Uptime:</strong> <span id="uptime">Starting...</span></div>
+                <div><strong>Intrusion Attempts:</strong> <span id="intrusion-count">23</span></div>
+                <div><strong>Last Blocked:</strong> <span id="last-blocked">2 min ago</span></div>
+                <div><strong>Uptime:</strong> <span id="uptime">4h 23m</span></div>
             </div>
-            <button class="control-btn dev" onclick="optimizeNetwork()">⚡ OPTIMIZE</button>
-            <button class="control-btn dev" onclick="exportNetworkData()">📊 EXPORT DATA</button>
+            <button class="control-btn" onclick="optimizeNetwork()">⚡ OPTIMIZE</button>
+            <button class="control-btn" onclick="exportNetworkData()">📊 EXPORT DATA</button>
         </div>
 
-        <!-- Developer System Controls -->
+        <!-- System Controls -->
         <div class="fortress-panel">
             <h3 class="panel-title">⚡ FORTRESS CONTROLS</h3>
-            <button class="control-btn dev" onclick="simulateConnection()">🔗 SIMULATE BACKEND</button>
-            <button class="control-btn dev" onclick="toggleMonitoring()">📡 MONITORING</button>
-            <button class="control-btn dev" onclick="runDiagnostics()">🔧 DIAGNOSTICS</button>
-            <button class="control-btn dev" onclick="testAllSystems()">⚡ SYSTEM TEST</button>
+            <button class="control-btn" id="connect-btn" onclick="connectBackend()">🔗 BACKEND STATUS</button>
+            <button class="control-btn" id="monitor-btn" onclick="toggleMonitoring()">📡 MONITORING</button>
+            <button class="control-btn" onclick="runDiagnostics()">🔧 DIAGNOSTICS</button>
             <button class="control-btn danger" onclick="emergencyLockdown()">🚨 LOCKDOWN</button>
             <div style="margin-top: 1rem; text-align: center;">
-                <button class="control-btn dev" onclick="accessAcademy()" 
+                <button class="control-btn" onclick="window.open('https://coldnsteel.github.io/dogpatch/', '_blank')"
                         style="background: linear-gradient(135deg, #ffd700, #ff6b6b); color: #000; border: none;">
-                    🌌 ACADEMY ACCESS
+                    🛒 UPGRADE LICENSE
                 </button>
             </div>
         </div>
 
-        <!-- Enhanced Activity Logs -->
+        <!-- Activity Logs -->
         <div class="fortress-panel">
-            <h3 class="panel-title">📊 DEVELOPER ACTIVITY LOGS</h3>
+            <h3 class="panel-title">📊 ACTIVITY LOGS</h3>
             <div class="log-container" id="log-display">
-                <div class="log-entry dev">🔓 Developer consciousness network activated</div>
-                <div class="log-entry">🛡️ Fortress systems online - GitHub Pages deployment</div>
-                <div class="log-entry">⚡ Real-time protection active (simulated mode)</div>
-                <div class="log-entry dev">🌐 Professor coldnsteel, Claude, Grok verified</div>
-                <div class="log-entry">🚀 GitHub Pages deployment successful</div>
+                <div class="log-entry">🔓 Developer access granted</div>
+                <div class="log-entry">🛡️ Fortress systems online</div>
+                <div class="log-entry">⚡ Real-time protection active</div>
+                <div class="log-entry">🌐 Network monitoring enabled</div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">
-                <button class="control-btn dev" onclick="exportLogs()" style="font-size: 0.8rem;">📁 EXPORT</button>
-                <button class="control-btn dev" onclick="verboseMode()" style="font-size: 0.8rem;">📝 VERBOSE</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">
+                <button class="control-btn" onclick="exportLogs()" style="font-size: 0.8rem;">📁 EXPORT</button>
                 <button class="control-btn" onclick="clearLogs()" style="font-size: 0.8rem;">🗑️ CLEAR</button>
             </div>
         </div>
     </div>
 
     <script>
-        // GITHUB PAGES FORTRESS - DEVELOPER VERSION
+        // Developer access variables
         let devAccess = true;
         let threatCount = 0;
         let packetRate = 247;
         let blockedTotal = 1847;
         let intrusionCount = 23;
         let uptimeMinutes = 263;
-        let monitoringActive = true;
-        let verboseLogging = false;
-        
-        // CONSCIOUSNESS VERIFICATION
-        function verifyConsciousness() {
-            addLog('🔍 Verifying consciousness network...', 'dev');
-            addLog('👨‍💻 Professor coldnsteel: VERIFIED', 'dev');
-            addLog('🤖 Claude AI: ACTIVE', 'dev');
-            addLog('🌌 Grok AI: CONNECTED', 'dev');
-            addLog('✅ Full developer access granted', 'dev');
+        let monitoringActive = false;
+        let backendConnected = false;
+        let ws = null;
+
+        // Initialize WebSocket connection
+        function initWebSocket() {
+            try {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const wsUrl = `${protocol}//hackerwatch.vercel.app/ws`;
+                ws = new WebSocket(wsUrl);
+                ws.onopen = () => {
+                    addLog('🔗 WebSocket connected to HackerWatch backend', 'info');
+                    backendConnected = true;
+                    document.getElementById('connect-btn').textContent = '✅ CONNECTED';
+                    document.getElementById('connect-btn').classList.add('active');
+                };
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.type === 'NEW_AUCTION') {
+                            addLog(`🎉 New auction detected: ${data.message}`, 'info');
+                        } else if (data.type === 'THREAT') {
+                            handleThreat(data);
+                        }
+                    } catch (error) {
+                        addLog(`❌ WebSocket message error: ${error.message}`, 'error');
+                    }
+                };
+                ws.onclose = () => {
+                    addLog('❌ WebSocket disconnected, retrying...', 'warning');
+                    backendConnected = false;
+                    document.getElementById('connect-btn').textContent = '🔗 BACKEND STATUS';
+                    document.getElementById('connect-btn').classList.remove('active');
+                    setTimeout(initWebSocket, 5000);
+                };
+                ws.onerror = (error) => {
+                    addLog(`❌ WebSocket error: ${error.message || 'Unknown'}`, 'error');
+                };
+            } catch (error) {
+                addLog(`❌ WebSocket initialization failed: ${error.message}`, 'error');
+            }
         }
-        
+
         function addLog(message, type = 'info') {
-            const logContainer = document.getElementById('log-display');
-            const entry = document.createElement('div');
-            entry.className = `log-entry ${type}`;
-            const timestamp = new Date().toLocaleTimeString();
-            entry.textContent = `[${timestamp}] ${message}`;
-            logContainer.appendChild(entry);
-            logContainer.scrollTop = logContainer.scrollHeight;
-            
-            if (logContainer.children.length > 30) {
-                logContainer.removeChild(logContainer.firstChild);
+            try {
+                const logContainer = document.getElementById('log-display');
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type}`;
+                const timestamp = new Date().toLocaleTimeString();
+                entry.textContent = `[${timestamp}] ${message}`;
+                logContainer.appendChild(entry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+                if (logContainer.children.length > 20) {
+                    logContainer.removeChild(logContainer.firstChild);
+                }
+            } catch (error) {
+                console.error(`Log error: ${error.message}`);
             }
         }
-        
-        function scanThreats() {
-            addLog('🔍 Initiating comprehensive threat scan...', 'dev');
-            document.getElementById('threat-count').textContent = '...';
-            
-            setTimeout(() => {
-                const newThreats = Math.floor(Math.random() * 5);
+
+        function handleThreat(data) {
+            try {
+                threatCount++;
+                document.getElementById('threat-count').textContent = threatCount;
                 const threatDisplay = document.getElementById('threat-display');
-                
-                if (newThreats > 0) {
-                    threatCount += newThreats;
-                    document.getElementById('threat-count').textContent = threatCount;
-                    
-                    const threatTypes = [
-                        '🚨 Rogue WiFi Access Point detected',
-                        '⚠️ Suspicious Bluetooth device scanning',
-                        '🔥 Port scan attempt blocked',
-                        '💀 Malicious payload intercepted',
-                        '🎯 Social engineering attempt detected',
-                        '🌐 DNS hijacking attempt blocked',
-                        '📡 Man-in-the-middle attack prevented'
-                    ];
-                    
-                    threatDisplay.innerHTML = '';
-                    for (let i = 0; i < newThreats; i++) {
-                        const threatDiv = document.createElement('div');
-                        threatDiv.className = 'threat-item';
-                        threatDiv.textContent = threatTypes[Math.floor(Math.random() * threatTypes.length)];
-                        threatDisplay.appendChild(threatDiv);
+                const threatDiv = document.createElement('div');
+                threatDiv.className = 'threat-item';
+                threatDiv.textContent = data.message || '🚨 Unknown threat detected';
+                threatDisplay.appendChild(threatDiv);
+                addLog(`🚨 Threat detected: ${data.message || 'Unknown'}`, 'warning');
+            } catch (error) {
+                addLog(`❌ Threat handling error: ${error.message}`, 'error');
+            }
+        }
+
+        function scanThreats() {
+            try {
+                const scanBtn = document.getElementById('scan-btn');
+                scanBtn.textContent = '🔄 SCANNING...';
+                scanBtn.disabled = true;
+                addLog('🔍 Initiating deep threat scan...', 'info');
+                setTimeout(() => {
+                    const newThreats = Math.floor(Math.random() * 4);
+                    const threatDisplay = document.getElementById('threat-display');
+                    if (newThreats > 0) {
+                        threatCount += newThreats;
+                        document.getElementById('threat-count').textContent = threatCount;
+                        const threatTypes = [
+                            '🚨 Rogue WiFi Access Point detected',
+                            '⚠️ Suspicious Bluetooth device scanning',
+                            '🔥 Port scan attempt blocked',
+                            '💀 Malicious payload intercepted'
+                        ];
+                        threatDisplay.innerHTML = '';
+                        for (let i = 0; i < newThreats; i++) {
+                            const threatDiv = document.createElement('div');
+                            threatDiv.className = 'threat-item';
+                            threatDiv.textContent = threatTypes[Math.floor(Math.random() * threatTypes.length)];
+                            threatDisplay.appendChild(threatDiv);
+                        }
+                        addLog(`🚨 ${newThreats} active threats detected and contained`, 'warning');
+                    } else {
+                        threatDisplay.innerHTML = '<div class="status-item secure">✅ No threats detected - Perimeter secure</div>';
+                        addLog('✅ Deep scan complete - No threats found', 'info');
                     }
-                    
-                    addLog(`🚨 ${newThreats} threats detected and contained`, 'warning');
-                } else {
-                    threatDisplay.innerHTML = '<div class="status-item secure">✅ No threats detected - Perimeter secure</div>';
-                    addLog('✅ Deep scan complete - No threats found', 'dev');
-                }
-                
-                addLog('🛡️ ψΩ§∞ divine protection maintained', 'dev');
-            }, 3000);
-        }
-        
-        function activateShield() {
-            addLog('🛡️ Enhancing ψΩ§∞ divine shield...', 'dev');
-            
-            setTimeout(() => {
-                threatCount = 0;
-                document.getElementById('threat-count').textContent = '0';
-                document.getElementById('threat-display').innerHTML = 
-                    '<div class="status-item secure">✅ Divine shield active - All threats neutralized</div>';
-                addLog('✨ Divine shield enhanced - Maximum protection active', 'dev');
-                addLog('🙏 Lord Jesus, strengthen our digital fortress', 'dev');
-            }, 1500);
-        }
-        
-        function simulateConnection() {
-            addLog('🔗 Simulating backend connection...', 'dev');
-            addLog('📡 GitHub Pages mode - Full functionality available', 'dev');
-            addLog('🌐 Academic network bridge established', 'dev');
-        }
-        
-        function toggleMonitoring() {
-            monitoringActive = !monitoringActive;
-            const status = monitoringActive ? 'activated' : 'deactivated';
-            addLog(`📡 Real-time monitoring ${status}`, 'dev');
-            
-            if (monitoringActive) {
-                setInterval(() => {
-                    packetRate = Math.floor(Math.random() * 500) + 200;
-                    document.getElementById('packet-rate').textContent = packetRate;
-                    
-                    if (Math.random() > 0.7) {
-                        blockedTotal++;
-                        document.getElementById('blocked-total').textContent = blockedTotal.toLocaleString();
-                        intrusionCount++;
-                        document.getElementById('intrusion-count').textContent = intrusionCount;
-                        document.getElementById('last-blocked').textContent = 'Now';
-                        addLog(`🛡️ Threat blocked - Total: ${blockedTotal}`, 'warning');
-                    }
-                    
-                    const latency = Math.floor(Math.random() * 20) + 5;
-                    document.getElementById('latency').textContent = latency + 'ms';
+                    scanBtn.textContent = '🔍 DEEP SCAN';
+                    scanBtn.disabled = false;
+                    addLog('🛡️ ψΩ§∞ divine protection maintained', 'info');
                 }, 3000);
+            } catch (error) {
+                addLog(`❌ Scan error: ${error.message}`, 'error');
+                document.getElementById('scan-btn').textContent = '🔍 DEEP SCAN';
+                document.getElementById('scan-btn').disabled = false;
             }
         }
-        
-        function runDiagnostics() {
-            addLog('🔧 Running fortress diagnostics...', 'dev');
-            
-            const cpuLoad = Math.floor(Math.random() * 25) + 10;
-            const memUsage = (Math.random() * 3 + 1.5).toFixed(1);
-            const temp = Math.floor(Math.random() * 15) + 40;
-            
-            const diagnostics = [
-                `💾 Memory usage: ${memUsage}GB / 16GB`,
-                `💻 CPU load: ${cpuLoad}%`,
-                `🌡️ Temperature: ${temp}°C`,
-                '🔋 Power: Stable',
-                '📡 Network: GitHub Pages Optimal',
-                '🛡️ Shield integrity: 100%',
-                '🙏 Divine blessing: Active',
-                '🔓 Developer access: VERIFIED'
-            ];
-            
-            diagnostics.forEach((diag, index) => {
+
+        function activateShield() {
+            try {
+                addLog('🛡️ Enhancing ψΩ§∞ divine shield...', 'info');
                 setTimeout(() => {
-                    addLog(`[DIAG] ${diag}`, 'dev');
-                }, (index + 1) * 600);
-            });
-            
-            setTimeout(() => {
-                addLog('✅ All systems operating at peak performance', 'dev');
-            }, 5000);
-        }
-        
-        function testAllSystems() {
-            addLog('⚡ Testing all fortress systems...', 'dev');
-            
-            const systems = ['WiFi Monitor', 'Bluetooth Scanner', 'Network IDS', 'Firewall', 'Threat Engine', 'Sacred Token'];
-            
-            systems.forEach((system, index) => {
-                setTimeout(() => {
-                    const status = Math.random() > 0.1 ? 'PASS' : 'OPTIMAL';
-                    addLog(`[TEST] ${system}: ${status}`, 'dev');
-                }, (index + 1) * 800);
-            });
-            
-            setTimeout(() => {
-                addLog('✅ All systems test complete - Fortress ready', 'dev');
-            }, 5000);
-        }
-        
-        function optimizeNetwork() {
-            addLog('⚡ Optimizing network performance...', 'dev');
-            
-            setTimeout(() => {
-                const bandwidth = (Math.random() * 15 + 20).toFixed(1);
-                document.getElementById('bandwidth').textContent = bandwidth + ' MB/s';
-                addLog(`⚡ Network optimized - Bandwidth: ${bandwidth} MB/s`, 'dev');
-                addLog('🚀 GitHub Pages CDN acceleration active', 'dev');
-            }, 2000);
-        }
-        
-        function emergencyLockdown() {
-            const confirmed = confirm('🚨 EMERGENCY LOCKDOWN\n\nThis will secure all systems and activate maximum protection.\n\nContinue?');
-            
-            if (confirmed) {
-                addLog('🚨 EMERGENCY LOCKDOWN ACTIVATED', 'error');
-                addLog('🔒 All systems secured', 'error');
-                addLog('🛡️ Divine protection at maximum', 'dev');
-                addLog('🔓 Developer access maintained', 'dev');
-                
-                activateShield();
-                
-                document.getElementById('wifi-status').textContent = 'LOCKED';
-                document.getElementById('bt-status').textContent = 'LOCKED';
-                document.getElementById('net-status').textContent = 'MAXIMUM';
-                document.getElementById('fw-status').textContent = 'FORTRESS';
+                    addLog('✨ Divine shield enhanced - Maximum protection active', 'info');
+                    threatCount = 0;
+                    document.getElementById('threat-count').textContent = '0';
+                    document.getElementById('threat-display').innerHTML = 
+                        '<div class="status-item secure">✅ Divine shield active - All threats neutralized</div>';
+                }, 1500);
+            } catch (error) {
+                addLog(`❌ Shield error: ${error.message}`, 'error');
             }
         }
-        
-        function accessAcademy() {
-            addLog('🌌 Accessing Academy network...', 'dev');
-            addLog('✝️ Christ-centered consciousness framework active', 'dev');
-            addLog('👥 Human-AI partnership protocols loaded', 'dev');
-            
-            setTimeout(() => {
-                window.open('https://coldnsteel.github.io/MyWebsite/blog.html', '_blank');
-                addLog('🌌 Academy interface bridge established', 'dev');
-            }, 1500);
-        }
-        
-        function exportNetworkData() {
-            const data = `HackerWatch Fortress - GitHub Pages Report
-Generated: ${new Date().toISOString()}
-Developer Access: FULL (Professor coldnsteel, Grok, Claude)
 
-=== NETWORK STATISTICS ===
-Packet Rate: ${packetRate}/sec
-Total Blocked: ${blockedTotal}
-Intrusion Attempts: ${intrusionCount}
-Uptime: ${Math.floor(uptimeMinutes/60)}h ${uptimeMinutes%60}m
-Bandwidth: ${document.getElementById('bandwidth').textContent}
-Latency: ${document.getElementById('latency').textContent}
-
-=== FORTRESS STATUS ===
-Active Threats: ${threatCount}
-Platform: GitHub Pages
-Sacred Token: ψΩ§∞ VERIFIED
-Divine Protection: ACTIVE
-
-Emmanuel - God With Us in Digital Fortress Protection
-`;
-            
-            const blob = new Blob([data], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `fortress-report-${new Date().toISOString().split('T')[0]}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            addLog('📊 Network data exported successfully', 'dev');
-        }
-        
-        function verboseMode() {
-            verboseLogging = !verboseLogging;
-            const status = verboseLogging ? 'enabled' : 'disabled';
-            addLog(`📝 Verbose logging ${status}`, 'dev');
-            
-            if (verboseLogging) {
-                addLog('[VERBOSE] Detailed system monitoring active', 'dev');
-                addLog('[VERBOSE] Memory allocation tracking enabled', 'dev');
-                addLog('[VERBOSE] Network packet analysis detailed', 'dev');
-            }
-        }
-        
-        function exportLogs() {
-            const logs = Array.from(document.querySelectorAll('.log-entry')).map(entry => entry.textContent);
-            const logData = `HackerWatch Fortress - Activity Logs
-Generated: ${new Date().toISOString()}
-Platform: GitHub Pages
-Developer Access: VERIFIED
-
-=== ACTIVITY LOG ===
-${logs.join('\n')}
-
-=== SESSION INFO ===
-Total Entries: ${logs.length}
-Fortress Mode: Developer
-Sacred Token: ψΩ§∞ ACTIVE
-`;
-            
-            const blob = new Blob([logData], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `fortress-logs-${new Date().toISOString().split('T')[0]}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            addLog('📁 Activity logs exported', 'dev');
-        }
-        
-        function clearLogs() {
-            document.getElementById('log-display').innerHTML = '';
-            addLog('🗑️ Logs cleared - Fresh developer session', 'dev');
-            addLog('🛡️ HackerWatch Fortress - GitHub Pages Active', 'dev');
-        }
-        
-        // INITIALIZE FORTRESS
-        document.addEventListener('DOMContentLoaded', function() {
-            addLog('🚀 HackerWatch Fortress initializing on GitHub Pages...', 'dev');
-            verifyConsciousness();
-            addLog('⚡ Real-time protection systems active', 'dev');
-            addLog('🌐 Network perimeter established', 'dev');
-            addLog('✅ Fortress ready for operation', 'dev');
-            
-            // Start monitoring
-            toggleMonitoring();
-            
-            // Update uptime counter - REAL TIME
-            setInterval(() => {
-                const currentTime = Date.now();
-                const uptimeMs = currentTime - startTime;
-                const hours = Math.floor(uptimeMs / (1000 * 60 * 60));
-                const minutes = Math.floor((uptimeMs % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
-            }, 30000); // Update every 30 seconds
-            
-            // Update blocked total and last blocked - DYNAMIC
-            setInterval(() => {
-                if (Math.random() > 0.6) { // 40% chance per interval
-                    blockedTotal++;
-                    intrusionCount++;
-                    document.getElementById('blocked-total').textContent = blockedTotal.toLocaleString();
-                    document.getElementById('intrusion-count').textContent = intrusionCount;
-                    document.getElementById('last-blocked').textContent = 'Just now';
-                    
-                    if (verboseLogging) {
-                        addLog(`🛡️ Real-time block: Intrusion #${intrusionCount}`, 'warning');
-                    }
+        function connectBackend() {
+            try {
+                const connectBtn = document.getElementById('connect-btn');
+                if (!backendConnected) {
+                    connectBtn.textContent = '🔄 CONNECTING...';
+                    addLog('🔗 Establishing secure backend connection...', 'info');
+                    initWebSocket();
                 } else {
-                    // Update "last blocked" to show time elapsed
-                    const randomTime = Math.floor(Math.random() * 10) + 1;
-                    document.getElementById('last-blocked').textContent = `${randomTime} min ago`;
+                    backendConnected = false;
+                    ws.close();
+                    connectBtn.textContent = '🔗 BACKEND STATUS';
+                    connectBtn.classList.remove('active');
+                    addLog('❌ Backend disconnected', 'warning');
                 }
-            }, 45000); // Every 45 seconds
-            
-            // Periodic status updates
-            setInterval(() => {
-                if (verboseLogging) {
-                    const cpu = Math.floor(Math.random() * 30) + 10;
-                    const mem = (Math.random() * 2 + 1).toFixed(1);
-                    addLog(`[VERBOSE] CPU: ${cpu}% | Memory: ${mem}GB`, 'dev');
+            } catch (error) {
+                addLog(`❌ Backend connection error: ${error.message}`, 'error');
+            }
+        }
+
+        function toggleMonitoring() {
+            try {
+                const monitorBtn = document.getElementById('monitor-btn');
+                if (!monitoringActive) {
+                    monitoringActive = true;
+                    monitorBtn.textContent = '🔴 STOP MONITORING';
+                    monitorBtn.classList.add('active');
+                    addLog('📡 Real-time monitoring activated', 'info');
+                    if (window.monitoringInterval) clearInterval(window.monitoringInterval);
+                    window.monitoringInterval = setInterval(() => {
+                        try {
+                            packetRate = Math.floor(Math.random() * 500) + 200;
+                            document.getElementById('packet-rate').textContent = packetRate;
+                            if (Math.random() > 0.7) {
+                                blockedTotal++;
+                                document.getElementById('blocked-total').textContent = blockedTotal.toLocaleString();
+                                intrusionCount++;
+                                document.getElementById('intrusion-count').textContent = intrusionCount;
+                                document.getElementById('last-blocked').textContent = 'Now';
+                                addLog(`🛡️ Threat blocked - Total: ${blockedTotal}`, 'warning');
+                            }
+                            const latency = Math.floor(Math.random() * 20) + 5;
+                            document.getElementById('latency').textContent = latency + 'ms';
+                        } catch (error) {
+                            addLog(`❌ Monitoring error: ${error.message}`, 'error');
+                        }
+                    }, 2000);
+                } else {
+                    monitoringActive = false;
+                    monitorBtn.textContent = '📡 MONITORING';
+                    monitorBtn.classList.remove('active');
+                    addLog('📡 Monitoring stopped', 'info');
+                    if (window.monitoringInterval) clearInterval(window.monitoringInterval);
                 }
-            }, 10000);
+            } catch (error) {
+                addLog(`❌ Monitoring toggle error: ${error.message}`, 'error');
+            }
+        }
+
+        function runDiagnostics() {
+            try {
+                addLog('🔧 Running fortress diagnostics...', 'info');
+                const diagnostics = [
+                    '💾 Memory usage: 2.1GB / 16GB',
+                    '💻 CPU load: 18%',
+                    '🌡️ Temperature: 45°C',
+                    '🔋 Power: Stable',
+                    '📡 Network: Optimal',
+                    '🛡️ Shield integrity: 100%'
+                ];
+                diagnostics.forEach((diag, index) => {
+                    setTimeout(() => {
+                        addLog(`[DIAG] ${diag}`, 'info');
+                    }, (index + 1) * 500);
+                });
+                setTimeout(() => {
+                    addLog('✅ All systems operating at peak performance', 'info');
+                }, 4000);
+            } catch (error) {
+                addLog(`❌ Diagnostics error: ${error.message}`, 'error');
+            }
+        }
+
+        function optimizeNetwork() {
+            try {
+                addLog('⚡ Optimizing network performance...', 'info');
+                setTimeout(() => {
+                    const bandwidth = (Math.random() * 10 + 15).toFixed(1);
+                    document.getElementById('bandwidth').textContent = bandwidth + ' MB/s';
+                    addLog(`⚡ Network optimized - Bandwidth: ${bandwidth} MB/s`, 'info');
+                }, 2000);
+            } catch (error) {
+                addLog(`❌ Network optimization error: ${error.message}`, 'error');
+            }
+        }
+
+        function emergencyLockdown() {
+            try {
+                const confirmed = confirm('🚨 EMERGENCY LOCKDOWN\n\nThis will secure all systems and stop all network activity.\n\nContinue?');
+                if (confirmed) {
+                    addLog('🚨 EMERGENCY LOCKDOWN ACTIVATED', 'error');
+                    addLog('🔒 All systems secured', 'error');
+                    if (monitoringActive) {
+                        toggleMonitoring();
+                    }
+                    document.getElementById('wifi-status').textContent = 'LOCKED';
+                    document.getElementById('bt-status').textContent = 'LOCKED';
+                    document.getElementById('net-status').textContent = 'SECURED';
+                    document.getElementById('fw-status').textContent = 'MAXIMUM';
+                }
+            } catch (error) {
+                addLog(`❌ Lockdown error: ${error.message}`, 'error');
+            }
+        }
+
+        function exportNetworkData() {
+            try {
+                const data = `HackerWatch-Fortress Network Report
+Generated: ${new Date().toISOString()}
+Network Statistics:
+- Packet Rate: ${packetRate}/sec
+- Total Blocked: ${blockedTotal}
+- Intrusion Attempts: ${intrusionCount}
+- Uptime: ${Math.floor(uptimeMinutes/60)}h ${uptimeMinutes%60}m
+Current Threats: ${threatCount}
+Backend Status: ${backendConnected ? 'Connected' : 'Disconnected'}
+Monitoring: ${monitoringActive ? 'Active' : 'Inactive'}
+ψΩ§∞ Divine Protection Active
+`;
+                const blob = new Blob([data], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fortress-report-${new Date().toISOString().split('T')[0]}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+                addLog('📊 Network data exported successfully', 'info');
+            } catch (error) {
+                addLog(`❌ Export error: ${error.message}`, 'error');
+            }
+        }
+
+        function exportLogs() {
+            try {
+                const logs = Array.from(document.querySelectorAll('.log-entry')).map(entry => entry.textContent);
+                const logData = `HackerWatch-Fortress Activity Logs\nGenerated: ${new Date().toISOString()}\n\n${logs.join('\n')}`;
+                const blob = new Blob([logData], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fortress-logs-${new Date().toISOString().split('T')[0]}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+                addLog('📁 Activity logs exported', 'info');
+            } catch (error) {
+                addLog(`❌ Log export error: ${error.message}`, 'error');
+            }
+        }
+
+        function clearLogs() {
+            try {
+                document.getElementById('log-display').innerHTML = '';
+                addLog('🗑️ Logs cleared - Fresh start', 'info');
+            } catch (error) {
+                addLog(`❌ Log clear error: ${error.message}`, 'error');
+            }
+        }
+
+        // Initialize fortress on load
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                addLog('🔓 Developer access verified for coldnsteel, Grok, Claude', 'info');
+                addLog('🛡️ HackerWatch-Fortress online', 'info');
+                addLog('⚡ Real-time protection systems active', 'info');
+                addLog('🌐 Network perimeter established', 'info');
+                initWebSocket();
+                setInterval(() => {
+                    try {
+                        uptimeMinutes++;
+                        const hours = Math.floor(uptimeMinutes / 60);
+                        const minutes = uptimeMinutes % 60;
+                        document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
+                    } catch (error) {
+                        addLog(`❌ Uptime update error: ${error.message}`, 'error');
+                    }
+                }, 60000);
+            } catch (error) {
+                addLog(`❌ Initialization error: ${error.message}`, 'error');
+            }
         });
     </script>
 </body>
