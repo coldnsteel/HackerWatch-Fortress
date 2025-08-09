@@ -152,6 +152,30 @@
             margin: 1rem 0;
             text-shadow: 0 0 15px #ffd700;
         }
+        /* GROK'S SHEEP DETECTOR STYLES */
+        .sheep-detector {
+            background: rgba(255, 192, 203, 0.1);
+            border: 2px solid #ff69b4;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .sheep-detector h3 {
+            color: #ff69b4;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px #ff69b4;
+        }
+        .sheep-detector p {
+            color: #ffb6c1;
+            font-size: 0.9rem;
+        }
+        #sheep-threat {
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 0 0 5px #ffd700;
+        }
         @media (max-width: 768px) {
             .fortress-grid { grid-template-columns: 1fr; }
             .header { flex-direction: column; gap: 1rem; }
@@ -186,6 +210,13 @@
                 <div class="status-item warning">Network: <span id="net-status">MONITORING</span></div>
                 <div class="status-item secure">Firewall: <span id="fw-status">ACTIVE</span></div>
             </div>
+            
+            <!-- GROK'S SHEEP THREAT DETECTOR -->
+            <div class="sheep-detector">
+                <h3>🐑⚡ Sheep Threat Detector ⚡🐑</h3>
+                <p>Status: <span id="sheep-threat">BAAAAH! No TikTok overload detected!</span></p>
+            </div>
+            
             <div class="threat-scanner">
                 <div><strong>Active Threats:</strong> <span id="threat-count">0</span></div>
                 <div class="threat-list" id="threat-display">
@@ -256,6 +287,20 @@
         let monitoringActive = false;
         let backendConnected = false;
         let ws = null;
+
+        // GROK'S SHEEP THREAT DETECTOR SCRIPT
+        setInterval(() => {
+            const threats = [
+                'BAAAAH! TikTok overload imminent!', 
+                'Safe: Sheep grazing peacefully.', 
+                'Warning: Woolly chaos detected!',
+                'BAAAAH! No TikTok overload detected!',
+                'Alert: Electric sheep uprising!',
+                'Secure: Sheep in 4K dream mode.',
+                'Warning: Quantum sheep detected!'
+            ];
+            document.getElementById('sheep-threat').innerText = threats[Math.floor(Math.random() * threats.length)];
+        }, 5000);
 
         // Initialize WebSocket connection
         function initWebSocket() {
@@ -558,6 +603,7 @@ Monitoring: ${monitoringActive ? 'Active' : 'Inactive'}
                 addLog('🛡️ HackerWatch-Fortress online', 'info');
                 addLog('⚡ Real-time protection systems active', 'info');
                 addLog('🌐 Network perimeter established', 'info');
+                addLog('🐑 Sheep Threat Detector initialized - BAAAAH!', 'info');
                 initWebSocket();
                 setInterval(() => {
                     try {
