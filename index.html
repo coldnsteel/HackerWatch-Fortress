@@ -327,12 +327,12 @@
                     }
                 };
                 ws.onclose = () => {
-                    addLog('❌ WebSocket disconnected, retrying...', 'warning');
-                    backendConnected = false;
-                    document.getElementById('connect-btn').textContent = '🔗 BACKEND STATUS';
-                    document.getElementById('connect-btn').classList.remove('active');
-                    setTimeout(initWebSocket, 5000);
-                };
+    addLog('❌ WebSocket disconnected - Switching to SHEEP MODE', 'warning');
+    backendConnected = false;
+    document.getElementById('connect-btn').textContent = '🐑 SHEEP MODE';
+    document.getElementById('connect-btn').classList.remove('active');
+    addLog('🐑 FORTRESS RUNNING IN SHEEP MODE - All systems operational offline!', 'info');
+};
                 ws.onerror = (error) => {
                     addLog(`❌ WebSocket error: ${error.message || 'Unknown'}`, 'error');
                 };
