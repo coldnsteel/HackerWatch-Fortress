@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HackerWatch-Fortress v2.2 - Security Awareness Dashboard</title>
+    <link rel="manifest" href="manifest.json">
     <style>
         body { font-family: monospace; background: #000; color: #00ff00; padding: 20px; }
         .banner { background: #ffff00; color: #000; padding: 10px; text-align: center; font-weight: bold; }
@@ -11,36 +12,43 @@
         button { background: #00ff00; color: #000; border: none; padding: 5px 10px; cursor: pointer; }
         a { color: #00ff00; }
         .vpn-toggle { margin: 10px 0; }
+        .stats { background: #1a1a1a; padding: 10px; border: 1px solid #00ff00; margin: 10px 0; }
     </style>
 </head>
 <body>
     <div class="banner">🛡️ HackerWatch-Fortress v2.2: Security Awareness Dashboard - Real IP/Device Detection, Anti-Hack Alerts. Full Protection for $19! Issues? Email lexalytics@yahoo.com</div>
     
     <h1>HackerWatch-Fortress v2.2</h1>
-    <p>IP Address: <span id="ip">Loading...</span> (via ipify.org)</p>
-    <p>Location: <span id="location">Loading...</span></p>
+    <div class="stats" id="stats">Loading Security Stats...</div>
+    <p>IP Address: <span id="ip">Loading...</span> (via ipapi.co)</p>
+    <p>Location: <span id="location">Loading...</span> (City, Country)</p>
     <p>Device: <span id="device">Loading...</span></p>
     <p>Open Ports: <span id="ports">N/A (Browser-Limited - Full Scan Requires Fortress Pass)</span></p>
     <p>Alerts: <span id="alerts">0 (Anti-Hack Mode)</span></p>
     <p class="vpn-toggle">VPN Active? <input type="checkbox" id="vpnToggle" onchange="checkVpn()"> No (Check if using VPN)</p>
     <p>Secure Now: <button onclick="promptVpn()">Enable VPN</button> (Protect Against Crypto Hacks)</p>
+    <p>Backend: <button onclick="connectBackend()">Connect Backend</button> (WebSocket for Real-Time Threats)</p>
     
-    <div class="alert">This client-side tool detects IP/device risks to prevent hacks like crypto theft. No email monitoring or agency reporting yet—get full features with $19 Fortress Pass + MFA. <a href="https://coldnsteel.github.io/GMSRFC/fortress-grand-opening.html">Get Started</a></div>
+    <div class="alert">This PWA detects IP/device risks to prevent hacks like crypto theft. No email monitoring or agency reporting yet—get full features with $19 Fortress Pass + MFA. <a href="https://coldnsteel.github.io/GMSRFC/fortress-grand-opening.html">Get Started</a></div>
     
+    <script src="security-config.js"></script>
     <script>
-        // Real IP detection via ipify.org (no API key)
-        fetch("https://api.ipify.org?format=json")
+        // Initialize SecurityConfig
+        const secConfig = window.securityConfig || new window.SecurityConfig();
+        function updateStats() {
+            document.getElementById("stats").innerHTML = `
+                Total Threats: ${secConfig.stats.totalThreats} | Email: ${secConfig.stats.emailThreats} | Network: ${secConfig.stats.networkThreats} | Last Update: ${new Date(secConfig.stats.lastUpdate).toLocaleTimeString()}
+            `;
+        }
+        updateStats();
+
+        // Real IP detection via ipapi.co (keyless for client IP, per curl tests)
+        fetch("https://ipapi.co/json/")
             .then(response => response.json())
             .then(data => {
                 document.getElementById("ip").textContent = data.ip || "IP Detection Failed";
-                // Get location via freegeoip.app
-                fetch(`https://freegeoip.app/json/${data.ip}`)
-                    .then(res => res.json())
-                    .then(geo => {
-                        document.getElementById("location").textContent = `${geo.city || "Unknown"}, ${geo.country_name || "Unknown"}`;
-                        checkVpn();
-                    })
-                    .catch(() => document.getElementById("location").textContent = "Location Unknown");
+                document.getElementById("location").textContent = `${data.city || "Unknown"}, ${data.country_name || "Unknown"}`;
+                checkVpn();
             })
             .catch(() => {
                 document.getElementById("ip").textContent = "IP Detection Failed";
@@ -57,7 +65,10 @@
             const ipText = document.getElementById("ip").textContent;
             if (!vpnToggle && ipText !== "IP Detection Failed") {
                 alertCount++;
+                secConfig.stats.networkThreats++;
+                secConfig.stats.lastUpdate = Date.now();
                 document.getElementById("alerts").textContent = `${alertCount} (Unsecured IP - Enable VPN to Prevent Crypto Hacks)`;
+                updateStats();
             } else if (vpnToggle) {
                 document.getElementById("alerts").textContent = `${alertCount} (VPN Active - Safer from Hacks)`;
             }
@@ -68,6 +79,22 @@
         function promptVpn() {
             alert("To prevent crypto hacks like July 2025, enable a VPN (e.g., NordVPN, ProtonVPN). Get Fortress Pass ($19) for advanced protection with MFA!");
             document.getElementById("vpnToggle").focus();
+        }
+
+        // Connect to backend (from package.json scripts)
+        function connectBackend() {
+            if (typeof WebSocket !== 'undefined') {
+                const ws = new WebSocket('ws://localhost:8080'); // Matches package.json websocket_port
+                ws.onopen = () => alert('Connected to Backend - Real-Time Threats Active!');
+                ws.onmessage = (event) => {
+                    secConfig.stats.totalThreats++;
+                    updateStats();
+                    alert(`Threat Detected: ${event.data}`);
+                };
+                ws.onerror = () => alert('Backend Connection Failed - Run "npm start" locally');
+            } else {
+                alert('WebSocket not supported - Use modern browser');
+            }
         }
 
         // No email phishing simulation
