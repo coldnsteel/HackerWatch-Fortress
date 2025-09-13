@@ -95,7 +95,7 @@
         <span id="vpnStatus">No (Check if using VPN)</span>
     </div>
     
-    <button onclick="promptVpn()">🔒 Enable VPN (Protect Against Hacks)</button>
+    <button onclick="promptVpn()">Enable VPN (Protect Against Hacks)</button>
     
     <!-- Backend button commented out per Grok's suggestion -->
     <!-- <button onclick="connectBackend()">Connect Backend</button> -->
@@ -106,15 +106,14 @@
     
     <div class="alert">
         This is a client-side tool to detect IP and device risks (like crypto hacks). 
-        No email monitoring or agency reporting yet—full features with $19 Fortress Pass + MFA. 
-        <a href="https://coldnsteel.github.io/GMSRFC/fortress-grand-opening.html">Get Started</a>
+        Contact: lexalytics@yahoo.com
     </div>
     
     <script src="security-config.js"></script>
     <script>
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🛡️ HackerWatch-Fortress v2.2 Loading...');
+            console.log('HackerWatch-Fortress v2.2 Loading...');
             
             detectDevice();
             detectIP();
@@ -297,19 +296,11 @@
             console.log('PWA install prompt available');
         });
 
-        // Service worker registration
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(registration => {
-                    console.log('ServiceWorker registered successfully');
-                })
-                .catch(error => {
-                    console.log('ServiceWorker registration failed:', error);
-                });
-        }
+        // Service worker registration disabled - sw.js is a Node.js server file
+        // Will be enabled when backend server is deployed
 
-        console.log('🛡️ HackerWatch-Fortress v2.2 Loaded');
-        console.log('📧 Contact: lexalytics@yahoo.com');
+        console.log('HackerWatch-Fortress v2.2 Loaded');
+        console.log('Contact: lexalytics@yahoo.com');
         console.log('Emmanuel - God With Us');
     </script>
 </body>
