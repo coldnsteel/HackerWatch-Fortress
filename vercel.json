@@ -1,13 +1,30 @@
 {
+  "version": 2,
   "functions": {
     "server.js": {
-      "runtime": "nodejs18.x"
+      "runtime": "@vercel/node@2.x"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/server.js"
+    },
+    {
+      "source": "/stats",
+      "destination": "/server.js"
+    },
+    {
+      "source": "/events",
+      "destination": "/server.js"
+    },
+    {
+      "source": "/public/(.*)",
+      "destination": "/public/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/public/index.html"
     }
   ]
 }
