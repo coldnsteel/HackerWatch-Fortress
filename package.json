@@ -1,12 +1,16 @@
 {
   "name": "hackerwatch-fortress",
   "version": "2.2.0",
+  "packageManager": "npm",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "ws": "^8.8.1",
-    "axios": "^0.27.2"
+    "express": "^4.19.2",
+    "ws": "^8.18.0",
+    "axios": "^1.7.7"
   }
 }
