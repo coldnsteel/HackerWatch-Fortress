@@ -17,6 +17,10 @@ let threats = {
 };
 
 let persistentEvents = [];
+let registeredUsers = [
+    { email: 'coldnsteel@test.com', serial: 'HWF-2025-001', mfaCode: '123456' },
+    { email: 'lexalytics@yahoo.com', serial: 'HWF-2025-002', mfaCode: '654321' }
+];
 
 wss.on('connection', ws => {
     console.log('Client connected');
@@ -77,6 +81,52 @@ async function reportToAgency(event) {
     }
 }
 
+// Serial/MFA Registration Endpoint
+app.post('/validate-serial', (req, res) => {
+    const { serial, email, mfaCode } = req.body;
+    
+    const user = registeredUsers.find(u => 
+        u.email === email && 
+        u.serial === serial && 
+        u.mfaCode === mfaCode
+    );
+    
+    if (user) {
+        res.json({ 
+            success: true, 
+            message: 'Access granted. Welcome to HackerWatch-Fortress Professional!' 
+        });
+        
+        // Log successful authentication
+        wss.clients.forEach(client => {
+            client.send(JSON.stringify({
+                type: 'log',
+                message: `[${new Date().toLocaleTimeString()}] [AUTH] User authenticated: ${email}`
+            }));
+        });
+    } else {
+        res.status(401).json({ 
+            success: false, 
+            message: 'Invalid serial number, email, or MFA code. Please check your credentials.' 
+        });
+    }
+});
+
+// Generate Serial (for manual serial creation)
+app.post('/generate-serial', (req, res) => {
+    const { email } = req.body;
+    const serial = 'HWF-2025-' + Math.random().toString(36).substr(2, 3).toUpperCase();
+    const mfaCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    registeredUsers.push({ email, serial, mfaCode });
+    
+    res.json({ 
+        serial, 
+        mfaCode, 
+        message: 'Serial generated successfully. MFA code provided for testing.' 
+    });
+});
+
 app.get('/stats', (req, res) => {
     res.json(threats);
 });
@@ -86,5 +136,6 @@ app.get('/events', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`HackerWatch-Fortress Server running on port ${port}`);
+    console.log('Registered users:', registeredUsers.length);
 });
