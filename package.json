@@ -1,16 +1,27 @@
 {
   "name": "hackerwatch-fortress",
   "version": "2.2.0",
-  "packageManager": "npm",
-  "engines": {
-    "node": "20.x"
-  },
+  "description": "Professional Cybersecurity Monitoring System",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'No build step required'"
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "ws": "^8.18.0",
-    "axios": "^1.7.7"
-  }
+    "express": "^4.18.2",
+    "ws": "^8.14.2",
+    "axios": "^1.6.0"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "keywords": [
+    "cybersecurity",
+    "monitoring",
+    "security",
+    "professional"
+  ],
+  "author": "lexalytics@yahoo.com",
+  "license": "MIT"
 }
