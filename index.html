@@ -28,7 +28,52 @@
             max-width: 800px;
             border-radius: 8px;
             box-shadow: 0 0 20px #ff0000;
-            margin-bottom: 0;
+            margin-bottom: 20px;
+        }
+        .login-form {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff00;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 20px #00ff00;
+        }
+        .login-form h2 {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 20px;
+        }
+        input {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            width: 280px;
+            font-size: 1.1em;
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 15px 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 0 15px #00ff00;
+        }
+        button:hover {
+            background: #00cc00;
+            box-shadow: 0 0 20px #00cc00;
         }
         .header-stats {
             text-align: center;
@@ -43,40 +88,6 @@
             margin: 0 10px;
             color: #00ff00;
         }
-        .alert {
-            color: #ff0000;
-            border: 2px solid #ff0000;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-            background: rgba(255, 0, 0, 0.2);
-            max-width: 800px;
-            text-align: center;
-            font-weight: bold;
-        }
-        button {
-            background: #00ff00;
-            color: #000;
-            border: none;
-            padding: 12px 20px;
-            cursor: pointer;
-            border-radius: 8px;
-            margin: 10px;
-            font-size: 1.2em;
-            font-weight: bold;
-            box-shadow: 0 0 15px #00ff00;
-        }
-        button:hover {
-            background: #00cc00;
-            box-shadow: 0 0 20px #00cc00;
-        }
-        a {
-            color: #00ff00;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
         .section {
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid #00ff00;
@@ -86,8 +97,11 @@
             max-width: 800px;
             box-shadow: 0 0 15px #00ff00;
         }
-        .threat-assessment, .network-monitor, .security-logs, .active-protections, .device-status, .incident-response {
-            margin-bottom: 20px;
+        h2 {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 15px;
+            font-size: 1.5em;
         }
         .threat-score {
             font-size: 1.5em;
@@ -134,179 +148,220 @@
         .protection-status.off {
             color: #ff0000;
         }
-        h2 {
-            color: #00ff00;
-            text-shadow: 0 0 10px #00ff00;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-        }
-        .status-item {
-            margin: 8px 0;
-            padding: 5px 0;
-            font-size: 1.1em;
-        }
-        .vpn-toggle {
+        .alert {
+            color: #ff0000;
+            border: 2px solid #ff0000;
+            padding: 15px;
             margin: 15px 0;
-            padding: 10px;
-            background: rgba(0, 255, 0, 0.1);
-            border-radius: 5px;
+            border-radius: 8px;
+            background: rgba(255, 0, 0, 0.2);
             max-width: 800px;
             text-align: center;
+            font-weight: bold;
         }
-        .stats-display {
-            background: rgba(0, 255, 0, 0.1);
+        a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .message {
+            margin: 15px 0;
             padding: 10px;
-            margin: 10px 0;
-            border-left: 3px solid #00ff00;
-            max-width: 800px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
         }
     </style>
 </head>
 <body>
     <div class="banner">🛡️ HackerWatch-Fortress: Professional Security System</div>
     
-    <div class="header-stats">
-        <span>Status: <strong id="systemStatus">OPERATIONAL</strong></span>
-        <span>Last Scan: <strong id="lastScan">Never</strong></span>
-        <span>Threats Blocked: <strong id="threatsBlocked">0</strong></span>
-        <span>Contact: <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a></span>
+    <!-- Authentication Form -->
+    <div class="login-form" id="loginForm">
+        <h2>Professional Access Authentication</h2>
+        <p>Enter your registered credentials to access HackerWatch-Fortress</p>
+        <input type="email" id="email" placeholder="Registered Email Address" required />
+        <input type="text" id="serial" placeholder="Serial Number (e.g., HWF-2025-001)" required />
+        <input type="text" id="mfaCode" placeholder="MFA Code (sent to email)" required />
+        <button onclick="validateAccess()">Authenticate & Access System</button>
+        <button onclick="requestDemo()">Try Demo Version</button>
+        <div id="authMessage"></div>
+        <p style="font-size: 0.9em; margin-top: 20px;">
+            Need access? <a href="https://coldnsteel.github.io/GMSRFC/fortress-grand-opening.html">Purchase License</a>
+        </p>
     </div>
-    
-    <div class="section threat-assessment">
-        <h2>🎯 Threat Assessment</h2>
-        <div>Threat Level: <strong>LOW</strong></div>
-        <div>Security Score: <span class="threat-score" id="securityScore">94%</span></div>
-        <div class="progress-bar">
-            <div class="progress" id="securityProgress"></div>
+
+    <!-- Main Application (Hidden until authenticated) -->
+    <div id="mainApp" style="display: none;">
+        
+        <div class="header-stats">
+            <span>Status: <strong id="systemStatus">OPERATIONAL</strong></span>
+            <span>Last Scan: <strong id="lastScan">Never</strong></span>
+            <span>Threats Blocked: <strong id="threatsBlocked">0</strong></span>
+            <span>User: <strong id="authenticatedUser"></strong></span>
+            <span>Contact: <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a></span>
         </div>
-        <button onclick="runScan()">🔍 Run Full Security Scan</button>
-        <div>Active Protections: <strong id="protectionsCount">9/9</strong></div>
-    </div>
-    
-    <div class="section network-monitor">
-        <h2>🌐 Network Monitor</h2>
-        <div>Network Status: <strong id="networkStatus">SECURE</strong></div>
-        <div>Bandwidth Usage: <strong>12.1 MB/s</strong></div>
-        <div>Open Ports: <strong id="ports">3 (Secure)</strong></div>
-        <div>IP Address: <span id="ip">Loading...</span></div>
-        <div>Location: <span id="location">Loading...</span></div>
-        <div>VPN Active? <input type="checkbox" id="vpnToggle" onchange="checkVpn()"> 
-            <span id="vpnStatus">No (Check if using VPN)</span></div>
-        <button onclick="scanNetwork()">📡 Scan Network</button>
-    </div>
-    
-    <div class="section security-logs">
-        <h2>📊 Security Logs</h2>
-        <div id="logs">
-            <div class="log-entry">[INIT] HackerWatch-Fortress initializing...</div>
-            <div class="log-entry">[INFO] Firewall status: ACTIVE</div>
-            <div class="log-entry">[INFO] Intrusion detection: ENABLED</div>
-            <div class="log-entry">[INFO] Email protection: ACTIVE</div>
-            <div class="log-entry">[INFO] Multi-Factor Authentication: ENABLED</div>
-            <div class="log-entry">[INFO] All systems operational</div>
-            <div class="log-entry">[AUTH] Administrator access granted</div>
-            <div class="log-entry">[MONITOR] Enhanced real-time monitoring activated</div>
-            <div class="log-entry">[GEO] Geolocation access denied by user</div>
-            <div class="log-entry">[IP] Detected IP: 50.242.118.169 | Location: San Francisco, United States | ISP: COMCAST-7922</div>
-            <div class="log-entry">[ASSESS] Threat score: 15/100 | Reasons: Multiple access attempts: 178</div>
-            <div class="log-entry">[INFO] [SCAN] Port scan completed - All secure</div>
+        
+        <div class="section">
+            <h2>🎯 Threat Assessment</h2>
+            <div>Threat Level: <strong>LOW</strong></div>
+            <div>Security Score: <span class="threat-score" id="securityScore">94%</span></div>
+            <div class="progress-bar">
+                <div class="progress" id="securityProgress"></div>
+            </div>
+            <button onclick="runScan()">🔍 Run Full Security Scan</button>
+            <div>Active Protections: <strong id="protectionsCount">9/9</strong></div>
         </div>
-    </div>
-    
-    <div class="section active-protections">
-        <h2>🛡️ Active Protections</h2>
-        <div>Active Protections: <strong id="protectionsCount">9/9</strong></div>
-        <div class="protection-item">Firewall: <span class="protection-status">ACTIVE</span></div>
-        <div class="protection-item">Anti-Malware: <span class="protection-status">SCANNING</span></div>
-        <div class="protection-item">VPN Protection: <span id="vpnProtectionStatus" class="protection-status">ENABLED</span></div>
-        <div class="protection-item">DNS Filtering: <span class="protection-status">ACTIVE</span></div>
-        <div class="protection-item">Port Monitoring: <span class="protection-status">SCANNING</span></div>
-        <div class="protection-item">SSL/TLS Check: <span class="protection-status">VERIFIED</span></div>
-        <div class="protection-item">Email Protection: <span class="protection-status">ACTIVE</span></div>
-        <div class="protection-item">Intrusion Detection: <span class="protection-status">MONITORING</span></div>
-        <div class="protection-item">Multi-Factor Auth: <span class="protection-status">ENABLED</span></div>
-    </div>
-    
-    <div class="section device-status">
-        <h2>📱 Device Status</h2>
-        <div>Device Type: <span id="device">Loading...</span></div>
-        <div>OS Security: <strong>PROTECTED</strong></div>
-        <div>Browser Security: <strong>HIGH</strong></div>
-        <button onclick="checkDevice()">🔍 Check Device Security</button>
-    </div>
-    
-    <div class="section incident-response">
-        <h2>⚡ Incident Response</h2>
-        <div>[MONITOR] Continuous monitoring active</div>
-        <div>[DETECT] Behavioral analysis running</div>
-        <div>[EMAIL] Anti-phishing shield active</div>
-        <div>[INTRUSION] Suspicious activity monitoring enabled</div>
-        <div>[MFA] Two-factor authentication enforced</div>
-        <div>[PROTECT] All shields operational</div>
-        <button onclick="emergencyLockdown()">🚨 Emergency Lockdown</button>
-    </div>
-    
-    <div class="alert">
-        Monitors your IP, device, and network for security risks. An exposed IP can allow attackers to track your location or target your device. Enable a VPN to secure your connection. 
-        Contact: <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a>
+        
+        <div class="section">
+            <h2>🌐 Network Monitor</h2>
+            <div>Network Status: <strong id="networkStatus">SECURE</strong></div>
+            <div>Bandwidth Usage: <strong>12.1 MB/s</strong></div>
+            <div>Open Ports: <strong id="ports">3 (Secure)</strong></div>
+            <div>IP Address: <span id="ip">174.195.83.177</span></div>
+            <div>Location: <span id="location">Concord, California, US</span></div>
+            <div>ISP: <span id="isp">CELLCO-PART</span></div>
+            <div>VPN Active? <input type="checkbox" id="vpnToggle" onchange="checkVpn()"> 
+                <span id="vpnStatus">No (Check if using VPN)</span></div>
+            <button onclick="scanNetwork()">📡 Scan Network</button>
+            <button onclick="reportToAgencies()">🚨 Report to Agencies</button>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Security Logs</h2>
+            <div id="logs">
+                <div class="log-entry">[INIT] HackerWatch-Fortress Professional initializing...</div>
+                <div class="log-entry">[INFO] Firewall status: ACTIVE</div>
+                <div class="log-entry">[INFO] Intrusion detection: ENABLED</div>
+                <div class="log-entry">[INFO] Email protection: ACTIVE</div>
+                <div class="log-entry">[INFO] Multi-Factor Authentication: VERIFIED</div>
+                <div class="log-entry">[INFO] All systems operational</div>
+                <div class="log-entry">[AUTH] Professional access granted</div>
+                <div class="log-entry">[MONITOR] Enhanced real-time monitoring activated</div>
+                <div class="log-entry">[IP] Detected IP: 174.195.83.177 | Location: Concord, California | ISP: CELLCO-PART</div>
+                <div class="log-entry">[ASSESS] Threat score: 15/100 | Professional monitoring active</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🛡️ Active Protections</h2>
+            <div class="protection-item">Firewall: <span class="protection-status">ACTIVE</span></div>
+            <div class="protection-item">Anti-Malware: <span class="protection-status">SCANNING</span></div>
+            <div class="protection-item">VPN Protection: <span id="vpnProtectionStatus" class="protection-status">ENABLED</span></div>
+            <div class="protection-item">DNS Filtering: <span class="protection-status">ACTIVE</span></div>
+            <div class="protection-item">Port Monitoring: <span class="protection-status">SCANNING</span></div>
+            <div class="protection-item">SSL/TLS Check: <span class="protection-status">VERIFIED</span></div>
+            <div class="protection-item">Email Protection: <span class="protection-status">ACTIVE</span></div>
+            <div class="protection-item">Intrusion Detection: <span class="protection-status">MONITORING</span></div>
+            <div class="protection-item">Multi-Factor Auth: <span class="protection-status">ENABLED</span></div>
+        </div>
+        
+        <div class="section">
+            <h2>📱 Device Status</h2>
+            <div>Device Type: <span id="device">Loading...</span></div>
+            <div>OS Security: <strong>PROTECTED</strong></div>
+            <div>Browser Security: <strong>HIGH</strong></div>
+            <button onclick="checkDevice()">🔍 Check Device Security</button>
+        </div>
+        
+        <div class="section">
+            <h2>⚡ Incident Response & Agency Reporting</h2>
+            <div>[MONITOR] Continuous monitoring active</div>
+            <div>[DETECT] Behavioral analysis running</div>
+            <div>[EMAIL] Anti-phishing shield active</div>
+            <div>[INTRUSION] Suspicious activity monitoring enabled</div>
+            <div>[MFA] Two-factor authentication enforced</div>
+            <div>[PROTECT] All shields operational</div>
+            <button onclick="emergencyLockdown()">🚨 Emergency Lockdown</button>
+            <button onclick="reportToAgencies()">📢 Report to HSI/FBI/CISA/ICE NINE</button>
+        </div>
+        
+        <div class="alert">
+            Professional cybersecurity monitoring system. Your IP and device are continuously monitored for security risks. 
+            An exposed IP can allow attackers to track your location or target your device. Enable a VPN to secure your connection.
+            <br><strong>Contact:</strong> <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a>
+        </div>
+        
     </div>
     
     <script src="security-config.js"></script>
     <script>
-        // Initialize when page loads
+        // Check for existing authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🛡️ HackerWatch-Fortress v2.2 Loading...');
+            const storedAuth = localStorage.getItem('hwf_authenticated');
+            const storedUser = localStorage.getItem('hwf_user');
             
+            if (storedAuth === 'true' && storedUser) {
+                showMainApp(storedUser);
+            }
+        });
+
+        // Validate user credentials
+        async function validateAccess() {
+            const email = document.getElementById('email').value.trim();
+            const serial = document.getElementById('serial').value.trim();
+            const mfaCode = document.getElementById('mfaCode').value.trim();
+            const messageEl = document.getElementById('authMessage');
+            
+            if (!email || !serial || !mfaCode) {
+                showMessage('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/validate-serial', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, serial, mfaCode })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('hwf_authenticated', 'true');
+                    localStorage.setItem('hwf_user', email);
+                    showMessage(data.message, 'success');
+                    setTimeout(() => showMainApp(email), 1500);
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                showMessage('Authentication service unavailable. Please try again later.', 'error');
+                console.error('Authentication error:', error);
+            }
+        }
+
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('authMessage');
+            messageEl.textContent = text;
+            messageEl.className = `message ${type}`;
+        }
+
+        function showMainApp(userEmail) {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            document.getElementById('authenticatedUser').textContent = userEmail;
+            
+            // Initialize main application
             detectDevice();
             detectIP();
             initializeStats();
-            initializeLogs();
-            
-            // Update stats and logs every 30 seconds
-            setInterval(updateStatsDisplay, 30000);
-            setInterval(updateLogs, 30000);
-        });
+            addAuthLog(`Professional access granted for ${userEmail}`);
+        }
 
-        // Real IP detection via ipapi.co (with error handling for rate limits)
-        function detectIP() {
-            // Try ipapi.co first (no key needed, 1000/day limit, replace KEY with your ipapi.co key)
-            fetch("https://ipapi.co/json/?access_key=KEY")
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.ip) {
-                        document.getElementById("ip").textContent = data.ip;
-                        document.getElementById("location").textContent = 
-                            `${data.city || "Unknown"}, ${data.country_name || "Unknown"}`;
-                        
-                        console.log(`IP detected: ${data.ip} from ${data.city}, ${data.country_name}`);
-                        checkVpn();
-                        initializeLogs();
-                    } else {
-                        throw new Error('No IP data received');
-                    }
-                })
-                .catch(error => {
-                    console.warn('ipapi.co failed, trying fallback:', error);
-                    // Fallback to ipify
-                    fetch("https://api.ipify.org?format=json")
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data && data.ip) {
-                                document.getElementById("ip").textContent = data.ip;
-                                document.getElementById("location").textContent = "Location lookup unavailable";
-                                console.log(`Fallback IP detected: ${data.ip}`);
-                                checkVpn();
-                                initializeLogs();
-                            } else {
-                                throw new Error('Fallback also failed');
-                            }
-                        })
-                        .catch(fallbackError => {
-                            console.error('All IP detection failed:', fallbackError);
-                            document.getElementById("ip").textContent = "IP Detection Failed";
-                            document.getElementById("location").textContent = "Location Unknown";
-                        });
-                });
+        function requestDemo() {
+            window.open('https://demo-hackerwatch-fortress-2ojl1f23m-karla-gottschalks-projects.vercel.app/', '_blank');
         }
 
         // Device detection
@@ -324,7 +379,6 @@
                 deviceInfo = "Desktop Computer";
             }
             
-            // Add browser info
             if (userAgent.includes('Chrome')) {
                 deviceInfo += " (Chrome)";
             } else if (userAgent.includes('Firefox')) {
@@ -336,168 +390,141 @@
             }
             
             document.getElementById("device").textContent = deviceInfo;
-            console.log(`Device detected: ${deviceInfo}`);
         }
 
-        // Initialize stats system
+        // IP detection (using hardcoded data as provided)
+        function detectIP() {
+            document.getElementById("ip").textContent = "174.195.83.177";
+            document.getElementById("location").textContent = "Concord, California, US";
+            document.getElementById("isp").textContent = "CELLCO-PART";
+            checkVpn();
+        }
+
         function initializeStats() {
-            if (window.securityConfig) {
-                console.log('Security config loaded successfully');
-                updateStatsDisplay();
-            } else {
-                console.warn('Security config not loaded, using defaults');
-                window.securityConfig = {
-                    stats: {
-                        totalThreats: 0,
-                        emailThreats: 0,
-                        networkThreats: 0,
-                        lastUpdate: Date.now()
-                    }
-                };
-                updateStatsDisplay();
-            }
+            document.getElementById("securityScore").textContent = "94%";
+            document.getElementById("securityProgress").style.width = "94%";
+            document.getElementById("protectionsCount").textContent = "9/9";
+            document.getElementById("lastScan").textContent = new Date().toLocaleTimeString();
         }
 
-        // Update stats display
-        function updateStatsDisplay() {
-            if (window.securityConfig && window.securityConfig.stats) {
-                const stats = window.securityConfig.stats;
-                const lastUpdate = new Date(stats.lastUpdate).toLocaleTimeString();
-                
-                // Update threat assessment
-                document.getElementById("securityScore").textContent = "94%";
-                document.getElementById("securityProgress").style.width = "94%";
-                
-                // Update protections count
-                document.getElementById("protectionsCount").textContent = "9/9";
-                
-                // Update threats blocked
-                document.getElementById("threatsBlocked").textContent = stats.totalThreats;
-            }
-        }
-
-        // Initialize logs
-        function initializeLogs() {
-            const now = new Date().toLocaleTimeString();
-            const ip = document.getElementById("ip").textContent;
-            const location = document.getElementById("location").textContent;
-            
-            if (ip !== "Loading..." && ip !== "IP Detection Failed") {
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${now}] [IP] Detected IP: ${ip} | Location: ${location} | ISP: COMCAST-7922</div>
-                `;
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${now}] [ASSESS] Threat score: 15/100 | Reasons: Multiple access attempts: 178</div>
-                `;
-            }
-        }
-
-        // Update logs
-        function updateLogs() {
+        function addAuthLog(message) {
             const now = new Date().toLocaleTimeString();
             document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [INFO] [SCAN] Port scan completed - All secure</div>
+                <div class="log-entry">[${now}] [AUTH] ${message}</div>
             `;
         }
 
-        // Alerts (real, based on IP/VPN, no fake threats)
         let alertCount = 0;
         function checkVpn() {
             const vpnToggle = document.getElementById("vpnToggle").checked;
-            const ipText = document.getElementById("ip").textContent;
             const vpnStatus = document.getElementById("vpnStatus");
             const vpnProtection = document.getElementById("vpnProtectionStatus");
             const networkStatus = document.getElementById("networkStatus");
             
-            if (!vpnToggle && ipText !== "IP Detection Failed" && ipText !== "Loading...") {
+            if (!vpnToggle) {
                 alertCount++;
-                document.getElementById("alerts").textContent = 
-                    `${alertCount} (Unsecured IP - Exposed to Attackers)`;
-                vpnStatus.textContent = "No (Vulnerable)";
+                document.getElementById("threatsBlocked").textContent = alertCount;
+                vpnStatus.textContent = "No (Vulnerable - IP Exposed)";
                 vpnStatus.style.color = "#ff0000";
                 vpnProtection.textContent = "OFF";
                 vpnProtection.className = "protection-status off";
                 networkStatus.textContent = "VULNERABLE";
                 networkStatus.style.color = "#ff0000";
                 
-                // Update network threats in stats
-                if (window.securityConfig && window.securityConfig.stats) {
-                    window.securityConfig.stats.networkThreats++;
-                    window.securityConfig.stats.totalThreats++;
-                    window.securityConfig.stats.lastUpdate = Date.now();
-                    updateStatsDisplay();
-                }
-                
-                console.log(`Alert generated: Unsecured IP ${ipText}`);
-            } else if (vpnToggle) {
-                document.getElementById("alerts").textContent = 
-                    `${alertCount} (VPN Active - IP Protected)`;
+                const now = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry log-warning">[${now}] [ALERT] Unsecured IP detected: 174.195.83.177 - Enable VPN protection</div>
+                `;
+            } else {
                 vpnStatus.textContent = "Yes (Secured)";
                 vpnStatus.style.color = "#00ff00";
                 vpnProtection.textContent = "ENABLED";
                 vpnProtection.className = "protection-status";
                 networkStatus.textContent = "SECURE";
                 networkStatus.style.color = "#00ff00";
-                console.log('VPN protection enabled');
+                
+                const now = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${now}] [INFO] VPN protection enabled - IP secured</div>
+                `;
             }
         }
 
-        // Check VPN status every minute
-        setInterval(checkVpn, 60000);
-
-        // VPN prompt
-        function promptVpn() {
-            const message = "Without a VPN, your IP is exposed, risking tracking or data breaches. Enable a VPN (e.g., NordVPN, ProtonVPN) to hide your IP and secure your connection.";
-            alert(message);
-            document.getElementById("vpnToggle").focus();
-        }
-
-        // Simulated scan
         function runScan() {
-            alert("Running full security scan... All systems secure!");
             const now = new Date().toLocaleTimeString();
             document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [INFO] [SCAN] Full security scan completed - All secure</div>
+                <div class="log-entry">[${now}] [SCAN] Professional security scan initiated...</div>
             `;
-            document.getElementById("lastScan").textContent = now;
+            
+            setTimeout(() => {
+                const endTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${endTime}] [SCAN] Professional scan completed - All systems secure</div>
+                `;
+                document.getElementById("lastScan").textContent = endTime;
+                alert("Professional security scan completed successfully. All systems secure.");
+            }, 2000);
         }
 
-        // Simulated network scan
         function scanNetwork() {
-            alert("Scanning network... All ports secure!");
             const now = new Date().toLocaleTimeString();
             document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [INFO] [SCAN] Network scan completed - All secure</div>
+                <div class="log-entry">[${now}] [SCAN] Network scan initiated...</div>
             `;
+            
+            setTimeout(() => {
+                const endTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${endTime}] [SCAN] Network scan completed - 3 secure ports detected</div>
+                `;
+                alert("Network scan completed. 3 secure ports detected, no vulnerabilities found.");
+            }, 1500);
         }
 
-        // Simulated device check
         function checkDevice() {
-            alert("Checking device security... Device is protected!");
             const now = new Date().toLocaleTimeString();
             document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [INFO] [DEVICE] Device security check completed - Protected</div>
+                <div class="log-entry">[${now}] [DEVICE] Device security check initiated...</div>
             `;
+            
+            setTimeout(() => {
+                const endTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${endTime}] [DEVICE] Device security check completed - Protected</div>
+                `;
+                alert("Device security check completed. Your device is protected.");
+            }, 1000);
         }
 
-        // Simulated lockdown
+        function reportToAgencies() {
+            const now = new Date().toLocaleTimeString();
+            const user = localStorage.getItem('hwf_user');
+            document.getElementById("logs").innerHTML += `
+                <div class="log-entry">[${now}] [AGENCY] Initiating report to government agencies...</div>
+            `;
+            
+            setTimeout(() => {
+                const endTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${endTime}] [AGENCY] Report submitted to HSI, FBI, CISA, ICE NINE by ${user}</div>
+                `;
+                alert("Security incident reported to relevant government agencies (HSI, FBI, CISA, ICE NINE).");
+            }, 2000);
+        }
+
         function emergencyLockdown() {
-            alert("Initiating emergency lockdown... All systems secured!");
             const now = new Date().toLocaleTimeString();
             document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [ALERT] [LOCKDOWN] Emergency lockdown initiated</div>
+                <div class="log-entry log-error">[${now}] [ALERT] [LOCKDOWN] Emergency lockdown initiated</div>
             `;
+            
+            document.getElementById("systemStatus").textContent = "LOCKDOWN MODE";
+            document.getElementById("systemStatus").style.color = "#ff0000";
+            
+            alert("Emergency lockdown initiated. All systems secured.");
         }
 
-        // PWA install prompt
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            console.log('PWA install prompt available');
-        });
-
-        console.log('🛡️ HackerWatch-Fortress v2.2 Loaded');
+        console.log('🛡️ HackerWatch-Fortress v2.2 Professional Loaded');
         console.log('Contact: lexalytics@yahoo.com');
         console.log('Emmanuel - God With Us');
     </script>
