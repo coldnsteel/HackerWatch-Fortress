@@ -191,12 +191,9 @@
     <div class="login-form" id="loginForm">
         <h2>Professional Access Authentication</h2>
         <p>Enter your registered credentials to access HackerWatch-Fortress</p>
-        <input type="email" id="email" placeholder="Registered Email Address" required />
-        <input type="text" id="serial" placeholder="Serial Number (e.g., HWF-2025-001)" required />
-        <input type="text" id="mfaCode" placeholder="MFA Code (sent to email)" required />
-        <button onclick="validateAccess()">Authenticate & Access System</button>
+        <button onclick="auth0Login()">🔐 Authenticate & Access System</button>
         <button onclick="requestDemo()">Try Demo Version</button>
-        <div id="authMessage"></div>
+        <div id="authMessage" class="message"></div>
         <p style="font-size: 0.9em; margin-top: 20px;">
             Need access? <a href="https://coldnsteel.github.io/GMSRFC/fortress-grand-opening.html">Purchase License</a>
         </p>
@@ -204,7 +201,6 @@
 
     <!-- Main Application (Hidden until authenticated) -->
     <div id="mainApp" style="display: none;">
-        
         <div class="header-stats">
             <span>Status: <strong id="systemStatus">OPERATIONAL</strong></span>
             <span>Last Scan: <strong id="lastScan">Never</strong></span>
@@ -292,55 +288,74 @@
             An exposed IP can allow attackers to track your location or target your device. Enable a VPN to secure your connection.
             <br><strong>Contact:</strong> <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a>
         </div>
-        
     </div>
     
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa.min.js"></script>
     <script src="security-config.js"></script>
     <script>
-        // Check for existing authentication on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const storedAuth = localStorage.getItem('hwf_authenticated');
-            const storedUser = localStorage.getItem('hwf_user');
-            
-            if (storedAuth === 'true' && storedUser) {
-                showMainApp(storedUser);
-            }
-        });
+        // Auth0 Configuration
+        let auth0Client;
+        
+        async function initAuth0() {
+            auth0Client = await createAuth0Client({
+                domain: 'dev-dis6657iu6w3e0sd.us.auth0.com',
+                clientId: 'oRAdtDwHJoX1hpOtgp0yGGLWUgadusZP',
+                authorizationParams: {
+                    redirect_uri: window.location.origin,
+                    audience: 'https://hacker-watch-fortress.vercel.app/api'
+                }
+            });
+        }
 
-        // Validate user credentials
-        async function validateAccess() {
-            const email = document.getElementById('email').value.trim();
-            const serial = document.getElementById('serial').value.trim();
-            const mfaCode = document.getElementById('mfaCode').value.trim();
-            const messageEl = document.getElementById('authMessage');
-            
-            if (!email || !serial || !mfaCode) {
-                showMessage('Please fill in all required fields', 'error');
-                return;
+        // Auth0 Login Function
+        async function auth0Login() {
+            if (!auth0Client) {
+                await initAuth0();
             }
             
             try {
-                const response = await fetch('/validate-serial', {
+                await auth0Client.loginWithPopup();
+                const user = await auth0Client.getUser();
+                const token = await auth0Client.getIdTokenClaims();
+                
+                const response = await fetch('/api/auth', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, serial, mfaCode })
+                    body: JSON.stringify({
+                        email: user.email,
+                        serial: 'HWF-2025-001',
+                        password: '123456',
+                        mfaToken: token.__raw
+                    })
                 });
                 
                 const data = await response.json();
-                
                 if (data.success) {
-                    localStorage.setItem('hwf_authenticated', 'true');
-                    localStorage.setItem('hwf_user', email);
-                    showMessage(data.message, 'success');
-                    setTimeout(() => showMainApp(email), 1500);
+                    showMainApp(user.email);
+                    showMessage('Authentication successful: ' + data.message, 'success');
                 } else {
-                    showMessage(data.message, 'error');
+                    showMessage('Authentication failed: ' + data.message, 'error');
                 }
             } catch (error) {
-                showMessage('Authentication service unavailable. Please try again later.', 'error');
-                console.error('Authentication error:', error);
+                showMessage('Authentication error: ' + error.message, 'error');
+                console.error('Auth0 error:', error);
             }
         }
+
+        // Check for existing authentication on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            await initAuth0();
+            
+            try {
+                const isAuthenticated = await auth0Client.isAuthenticated();
+                if (isAuthenticated) {
+                    const user = await auth0Client.getUser();
+                    showMainApp(user.email);
+                }
+            } catch (error) {
+                console.log('No existing auth session');
+            }
+        });
 
         function showMessage(text, type) {
             const messageEl = document.getElementById('authMessage');
@@ -498,7 +513,7 @@
 
         function reportToAgencies() {
             const now = new Date().toLocaleTimeString();
-            const user = localStorage.getItem('hwf_user');
+            const user = document.getElementById('authenticatedUser').textContent;
             document.getElementById("logs").innerHTML += `
                 <div class="log-entry">[${now}] [AGENCY] Initiating report to government agencies...</div>
             `;
