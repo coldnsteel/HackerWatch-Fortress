@@ -7,6 +7,11 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://dev-dis6657iu6w3e0sd.us.auth0.com');
+    res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
+    next();
+});
 
 const wss = new WebSocket.Server({ port: 8080 });
 
@@ -233,7 +238,7 @@ const products = {
     }
 };
 
-// Nmap scan (real port scanning)
+// Nmap scan (real port scanning, placeholder for Vercel)
 async function runNmapScan(ip) {
     return new Promise((resolve, reject) => {
         exec(`nmap -F ${ip}`, (error, stdout, stderr) => {
@@ -254,8 +259,6 @@ async function runNmapScan(ip) {
 // ClamAV scan (simplified for serverless)
 async function runClamAVScan() {
     return new Promise((resolve) => {
-        // Placeholder for ClamAV (requires server setup with clamd)
-        // Vercel serverless limits binary execution, so simulate for now
         resolve({
             type: 'antivirusResult',
             status: 'No threats detected',
@@ -264,11 +267,17 @@ async function runClamAVScan() {
     });
 }
 
-// Auth0 MFA (placeholder for client-side integration)
+// Auth0 MFA
 async function verifyMFA(token) {
-    // Requires Auth0 setup (client ID, domain)
-    // Simulate for now, integrate later
-    return token === 'dummy-mfa-token' ? { valid: true } : { valid: false };
+    try {
+        const response = await axios.get('https://dev-dis6657iu6w3e0sd.us.auth0.com/userinfo', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return { valid: response.status === 200 };
+    } catch (error) {
+        console.error('Auth0 MFA failed:', error);
+        return { valid: false };
+    }
 }
 
 wss.on('connection', ws => {
@@ -343,7 +352,7 @@ async function reportToAgency(event) {
 app.post('/api/auth', async (req, res) => {
     const { email, serial, password, mfaToken } = req.body;
     if (email === 'diplomat.hawaiiankingdom.justice@gmail.com' && serial === 'HWF-2025-001' && password === '123456') {
-        const mfaResult = await verifyMFA(mfaToken || 'dummy-mfa-token');
+        const mfaResult = await verifyMFA(mfaToken);
         if (mfaResult.valid) {
             res.json({ 
                 success: true, 
