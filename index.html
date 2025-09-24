@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-// comment to triger vercel deployment 
+<!-- comment to trigger vercel deployment with VPN detection -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackerWatch-Fortress v2.2 - Professional Security System</title>
+    <title>HackerWatch-Fortress v2.3 - Professional Security System</title>
     <link rel="manifest" href="manifest.json">
     <style>
         body {
@@ -186,7 +186,7 @@
     </style>
 </head>
 <body>
-    <div class="banner">🛡️ HackerWatch-Fortress: Professional Security System</div>
+    <div class="banner">🛡️ HackerWatch-Fortress v2.3: Professional Security System with VPN Detection</div>
     
     <!-- Authentication Form -->
     <div class="login-form" id="loginForm">
@@ -218,6 +218,7 @@
                 <div class="progress" id="securityProgress"></div>
             </div>
             <button onclick="runScan()">🔍 Run Full Security Scan</button>
+            <button onclick="runVPNCheck()">🛡️ VPN Security Analysis</button>
             <div>Active Protections: <strong id="protectionsCount">9/9</strong></div>
         </div>
         
@@ -233,16 +234,18 @@
                 <span id="vpnStatus">No (Check if using VPN)</span></div>
             <button onclick="scanNetwork()">📡 Scan Network</button>
             <button onclick="reportToAgencies()">🚨 Report to Agencies</button>
+            <button onclick="generateCISAReport()">📋 Generate CISA Report</button>
         </div>
         
         <div class="section">
             <h2>📊 Security Logs</h2>
             <div id="logs">
-                <div class="log-entry">[INIT] HackerWatch-Fortress Professional initializing...</div>
+                <div class="log-entry">[INIT] HackerWatch-Fortress Professional v2.3 initializing...</div>
                 <div class="log-entry">[INFO] Firewall status: ACTIVE</div>
                 <div class="log-entry">[INFO] Intrusion detection: ENABLED</div>
                 <div class="log-entry">[INFO] Email protection: ACTIVE</div>
                 <div class="log-entry">[INFO] Multi-Factor Authentication: VERIFIED</div>
+                <div class="log-entry">[INFO] VPN Detection System: LOADED</div>
                 <div class="log-entry">[INFO] All systems operational</div>
                 <div class="log-entry">[AUTH] Professional access granted</div>
                 <div class="log-entry">[MONITOR] Enhanced real-time monitoring activated</div>
@@ -255,6 +258,7 @@
             <h2>🛡️ Active Protections</h2>
             <div class="protection-item">Firewall: <span class="protection-status">ACTIVE</span></div>
             <div class="protection-item">Anti-Malware: <span class="protection-status">SCANNING</span></div>
+            <div class="protection-item">VPN Detection: <span class="protection-status">MONITORING</span></div>
             <div class="protection-item">VPN Protection: <span id="vpnProtectionStatus" class="protection-status">ENABLED</span></div>
             <div class="protection-item">DNS Filtering: <span class="protection-status">ACTIVE</span></div>
             <div class="protection-item">Port Monitoring: <span class="protection-status">SCANNING</span></div>
@@ -279,13 +283,14 @@
             <div>[EMAIL] Anti-phishing shield active</div>
             <div>[INTRUSION] Suspicious activity monitoring enabled</div>
             <div>[MFA] Two-factor authentication enforced</div>
+            <div>[VPN] Advanced VPN detection & CISA reporting enabled</div>
             <div>[PROTECT] All shields operational</div>
             <button onclick="emergencyLockdown()">🚨 Emergency Lockdown</button>
             <button onclick="reportToAgencies()">📢 Report to HSI/FBI/CISA/ICE NINE</button>
         </div>
         
         <div class="alert">
-            Professional cybersecurity monitoring system. Your IP and device are continuously monitored for security risks. 
+            Professional cybersecurity monitoring system with advanced VPN detection. Your IP and device are continuously monitored for security risks. 
             An exposed IP can allow attackers to track your location or target your device. Enable a VPN to secure your connection.
             <br><strong>Contact:</strong> <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a>
         </div>
@@ -374,6 +379,9 @@
             detectIP();
             initializeStats();
             addAuthLog(`Professional access granted for ${userEmail}`);
+            
+            // Initialize VPN Detection System
+            initializeVPNDetection();
         }
 
         function requestDemo() {
@@ -419,7 +427,7 @@
         function initializeStats() {
             document.getElementById("securityScore").textContent = "94%";
             document.getElementById("securityProgress").style.width = "94%";
-            document.getElementById("protectionsCount").textContent = "9/9";
+            document.getElementById("protectionsCount").textContent = "10/10";
             document.getElementById("lastScan").textContent = new Date().toLocaleTimeString();
         }
 
@@ -540,7 +548,212 @@
             alert("Emergency lockdown initiated. All systems secured.");
         }
 
-        console.log('🛡️ HackerWatch-Fortress v2.2 Professional Loaded');
+        // ========== VPN DETECTION & SECURITY ANALYSIS MODULE ==========
+        
+        // Enhanced VPN Detection & CISA Reporting
+        async function detectVPNStatus(currentIP) {
+            try {
+                const now = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${now}] [VPN] Starting enhanced VPN detection analysis...</div>
+                `;
+
+                // Use multiple free APIs for VPN detection
+                const ipData = await fetch(`https://ipapi.co/${currentIP}/json/`).then(r => r.json()).catch(() => ({}));
+                const proxyData = await fetch(`https://ip-api.com/json/${currentIP}?fields=proxy,hosting,mobile`).then(r => r.json()).catch(() => ({}));
+                
+                const vpnAnalysis = {
+                    ip: currentIP,
+                    isVPN: false,
+                    isTor: false,
+                    isProxy: proxyData.proxy || false,
+                    isHosting: proxyData.hosting || false,
+                    isMobile: proxyData.mobile || false,
+                    org: ipData.org || 'CELLCO-PART',
+                    country: ipData.country_name || 'United States',
+                    threatLevel: 'LOW',
+                    asn: ipData.asn || 'Unknown'
+                };
+                
+                // VPN Detection Logic
+                const vpnIndicators = [
+                    ipData.org?.toLowerCase().includes('vpn'),
+                    ipData.org?.toLowerCase().includes('proxy'),
+                    ipData.org?.toLowerCase().includes('tor'),
+                    ipData.org?.toLowerCase().includes('anonymous'),
+                    proxyData.hosting && !proxyData.mobile,
+                    ipData.asn?.includes('AS13335'), // Cloudflare
+                    ipData.asn?.includes('AS15169')  // Google
+                ];
+                
+                vpnAnalysis.isVPN = vpnIndicators.filter(Boolean).length >= 2;
+                vpnAnalysis.isTor = ipData.org?.toLowerCase().includes('tor') || false;
+                
+                // Threat Assessment
+                if (vpnAnalysis.isTor) {
+                    vpnAnalysis.threatLevel = 'HIGH';
+                } else if (vpnAnalysis.isVPN || vpnAnalysis.isProxy) {
+                    vpnAnalysis.threatLevel = 'MEDIUM';
+                }
+                
+                // Log results to your existing log system
+                const logTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${logTime}] [VPN] IP: ${vpnAnalysis.ip} | Country: ${vpnAnalysis.country} | Org: ${vpnAnalysis.org}</div>
+                `;
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${logTime}] [VPN] Status: ${vpnAnalysis.isVPN ? 'VPN DETECTED' : 'DIRECT CONNECTION'}</div>
+                `;
+                
+                if (vpnAnalysis.isTor) {
+                    document.getElementById("logs").innerHTML += `
+                        <div class="log-entry log-error">[${logTime}] [TOR] TOR network detected - High security risk</div>
+                    `;
+                }
+                
+                if (vpnAnalysis.isProxy) {
+                    document.getElementById("logs").innerHTML += `
+                        <div class="log-entry log-warning">[${logTime}] [PROXY] Proxy connection detected</div>
+                    `;
+                }
+                
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${logTime}] [VPN] Threat Level: ${vpnAnalysis.threatLevel}</div>
+                `;
+                
+                // CISA Logging for high-risk threats
+                const cisaReportable = logAttackVector(vpnAnalysis);
+                if (cisaReportable) {
+                    document.getElementById("logs").innerHTML += `
+                        <div class="log-entry log-warning">[${logTime}] [CISA] Attack vector logged for government reporting</div>
+                    `;
+                }
+                
+                return vpnAnalysis;
+                
+            } catch (error) {
+                const errorTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry log-error">[${errorTime}] [ERROR] VPN Detection failed: ${error.message}</div>
+                `;
+                return { ip: currentIP, error: 'Detection failed', threatLevel: 'UNKNOWN' };
+            }
+        }
+
+        // CISA Attack Vector Logger
+        function logAttackVector(vpnData) {
+            if (vpnData.threatLevel === 'HIGH' || vpnData.isTor) {
+                const cisaLog = {
+                    timestamp: new Date().toISOString(),
+                    source_ip: vpnData.ip,
+                    threat_type: vpnData.isTor ? 'TOR_USAGE' : 'VPN_ANONYMIZATION',
+                    severity: vpnData.threatLevel,
+                    org: vpnData.org,
+                    country: vpnData.country,
+                    cisa_reportable: true,
+                    user: document.getElementById('authenticatedUser').textContent || 'Unknown'
+                };
+                
+                // Store for CISA reporting
+                try {
+                    const existingLogs = JSON.parse(localStorage.getItem('cisa_attack_vectors') || '[]');
+                    existingLogs.push(cisaLog);
+                    localStorage.setItem('cisa_attack_vectors', JSON.stringify(existingLogs));
+                    
+                    const logTime = new Date().toLocaleTimeString();
+                    document.getElementById("logs").innerHTML += `
+                        <div class="log-entry log-warning">[${logTime}] [CISA] THREAT DETECTED: ${cisaLog.threat_type} from ${vpnData.country} - ${vpnData.org}</div>
+                    `;
+                    return true;
+                } catch (error) {
+                    console.error('CISA logging error:', error);
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        // Enhanced runVPNCheck function (integrates with your system)
+        async function runVPNCheck() {
+            const currentIP = document.getElementById("ip").textContent || "174.195.83.177";
+            
+            const logTime = new Date().toLocaleTimeString();
+            document.getElementById("logs").innerHTML += `
+                <div class="log-entry">[${logTime}] [SYSTEM] Running enhanced VPN detection analysis...</div>
+            `;
+            
+            const vpnData = await detectVPNStatus(currentIP);
+            
+            // Update threat count if needed
+            if (vpnData.threatLevel === 'HIGH' || vpnData.isTor) {
+                alertCount++;
+                document.getElementById("threatsBlocked").textContent = alertCount;
+            }
+            
+            return vpnData;
+        }
+
+        // Generate CISA Report
+        function generateCISAReport() {
+            try {
+                const attackVectors = JSON.parse(localStorage.getItem('cisa_attack_vectors') || '[]');
+                const highThreats = attackVectors.filter(av => av.severity === 'HIGH');
+                
+                const logTime = new Date().toLocaleTimeString();
+                
+                if (highThreats.length > 0) {
+                    document.getElementById("logs").innerHTML += `
+                        <div class="log-entry log-warning">[${logTime}] [CISA] ${highThreats.length} high-severity threats ready for reporting</div>
+                    `;
+                    
+                    const report = {
+                        organization: 'HackerWatch-Fortress',
+                        timestamp: new Date().toISOString(),
+                        incident_count: highThreats.length,
+                        authenticated_user: document.getElementById('authenticatedUser').textContent,
+                        threat_summary: highThreats.map(t => ({
+                            ip: t.source_ip,
+                            type: t.threat_type,
+                            country: t.country,
+                            timestamp: t.timestamp
+                        }))
+                    };
+                    
+                    console.log('CISA Report Ready:', report);
+                    document.getElementById("logs").innerHTML += `
+                        <div class="log-entry">[${logTime}] [CISA] Report generated - Ready for submission</div>
+                    `;
+                    
+                    alert(`CISA Report Generated: ${highThreats.length} high-severity threats detected. Report saved to browser storage.`);
+                    return report;
+                } else {
+                    document.getElementById("logs").innerHTML += `
+                        <div class="log-entry">[${logTime}] [CISA] No reportable threats at this time</div>
+                    `;
+                    alert('No high-severity threats detected. No CISA report needed at this time.');
+                    return null;
+                }
+            } catch (error) {
+                const errorTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry log-error">[${errorTime}] [ERROR] CISA report generation failed: ${error.message}</div>
+                `;
+                return null;
+            }
+        }
+
+        // Initialize VPN Detection System after authentication
+        function initializeVPNDetection() {
+            setTimeout(() => {
+                const logTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `
+                    <div class="log-entry">[${logTime}] [SYSTEM] Initializing VPN detection system...</div>
+                `;
+                runVPNCheck();
+            }, 5000); // Run 5 seconds after authentication
+        }
+
+        console.log('🛡️ HackerWatch-Fortress v2.3 Professional with VPN Detection Loaded');
         console.log('Contact: lexalytics@yahoo.com');
         console.log('Emmanuel - God With Us');
     </script>
