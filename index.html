@@ -76,6 +76,12 @@
             background: #00cc00;
             box-shadow: 0 0 20px #00cc00;
         }
+        button:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
         .header-stats {
             text-align: center;
             max-width: 800px;
@@ -183,16 +189,60 @@
             color: #ff0000;
             border: 1px solid #ff0000;
         }
+        .agreement-section {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            background: rgba(0, 255, 0, 0.1);
+        }
+        .agreement-section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .agreement-section li {
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+        .agreement-checkbox {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+        .agreement-checkbox input {
+            width: auto;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
-    <div class="banner">🛡️ HackerWatch-Fortress v2.3: Professional Security System with VPN Detection</div>
+    <div class="banner">HackerWatch-Fortress v2.3: Professional Security System with VPN Detection</div>
     
     <!-- Authentication Form -->
     <div class="login-form" id="loginForm">
         <h2>Professional Access Authentication</h2>
         <p>Enter your registered credentials to access HackerWatch-Fortress</p>
-        <button onclick="auth0Login()">🔐 Authenticate & Access System</button>
+        
+        <!-- CISA-Aligned User Agreement -->
+        <div class="agreement-section">
+            <h2>User Agreement</h2>
+            <p>By accessing HackerWatch-Fortress v2.3 Professional, you agree to:</p>
+            <ul>
+                <li>Share anonymized threat data with CISA's Automated Indicator Sharing (AIS) program to enhance cybersecurity.</li>
+                <li>Comply with data privacy and security policies, ensuring no unauthorized data sharing.</li>
+                <li>Use the system solely for professional cybersecurity monitoring and incident response.</li>
+                <li>Acknowledge continuous monitoring of your IP and device for security risks, with potential reporting to HSI, FBI, CISA, and ICE NINE.</li>
+                <li>Contact <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a> for support or inquiries.</li>
+            </ul>
+            <div class="agreement-checkbox">
+                <label>
+                    <input type="checkbox" id="agreementCheckbox" required> 
+                    I agree to the terms above and authorize CISA data sharing
+                </label>
+            </div>
+        </div>
+        
+        <button id="authButton" onclick="auth0Login()" disabled>Authenticate & Access System</button>
         <button onclick="requestDemo()">Try Demo Version</button>
         <div id="authMessage" class="message"></div>
         <p style="font-size: 0.9em; margin-top: 20px;">
@@ -211,19 +261,19 @@
         </div>
         
         <div class="section">
-            <h2>🎯 Threat Assessment</h2>
+            <h2>Threat Assessment</h2>
             <div>Threat Level: <strong>LOW</strong></div>
             <div>Security Score: <span class="threat-score" id="securityScore">94%</span></div>
             <div class="progress-bar">
                 <div class="progress" id="securityProgress"></div>
             </div>
-            <button onclick="runScan()">🔍 Run Full Security Scan</button>
-            <button onclick="runVPNCheck()">🛡️ VPN Security Analysis</button>
-            <div>Active Protections: <strong id="protectionsCount">9/9</strong></div>
+            <button onclick="runScan()">Run Full Security Scan</button>
+            <button onclick="runVPNCheck()">VPN Security Analysis</button>
+            <div>Active Protections: <strong id="protectionsCount">10/10</strong></div>
         </div>
         
         <div class="section">
-            <h2>🌐 Network Monitor</h2>
+            <h2>Network Monitor</h2>
             <div>Network Status: <strong id="networkStatus">SECURE</strong></div>
             <div>Bandwidth Usage: <strong>12.1 MB/s</strong></div>
             <div>Open Ports: <strong id="ports">3 (Secure)</strong></div>
@@ -232,13 +282,13 @@
             <div>ISP: <span id="isp">CELLCO-PART</span></div>
             <div>VPN Active? <input type="checkbox" id="vpnToggle" onchange="checkVpn()"> 
                 <span id="vpnStatus">No (Check if using VPN)</span></div>
-            <button onclick="scanNetwork()">📡 Scan Network</button>
-            <button onclick="reportToAgencies()">🚨 Report to Agencies</button>
-            <button onclick="generateCISAReport()">📋 Generate CISA Report</button>
+            <button onclick="scanNetwork()">Scan Network</button>
+            <button onclick="reportToAgencies()">Report to Agencies</button>
+            <button onclick="generateCISAReport()">Generate CISA Report</button>
         </div>
         
         <div class="section">
-            <h2>📊 Security Logs</h2>
+            <h2>Security Logs</h2>
             <div id="logs">
                 <div class="log-entry">[INIT] HackerWatch-Fortress Professional v2.3 initializing...</div>
                 <div class="log-entry">[INFO] Firewall status: ACTIVE</div>
@@ -251,11 +301,12 @@
                 <div class="log-entry">[MONITOR] Enhanced real-time monitoring activated</div>
                 <div class="log-entry">[IP] Detected IP: 174.195.83.177 | Location: Concord, California | ISP: CELLCO-PART</div>
                 <div class="log-entry">[ASSESS] Threat score: 15/100 | Professional monitoring active</div>
+                <div class="log-entry">[CISA] User agreement accepted - AIS data sharing authorized</div>
             </div>
         </div>
         
         <div class="section">
-            <h2>🛡️ Active Protections</h2>
+            <h2>Active Protections</h2>
             <div class="protection-item">Firewall: <span class="protection-status">ACTIVE</span></div>
             <div class="protection-item">Anti-Malware: <span class="protection-status">SCANNING</span></div>
             <div class="protection-item">VPN Detection: <span class="protection-status">MONITORING</span></div>
@@ -269,15 +320,15 @@
         </div>
         
         <div class="section">
-            <h2>📱 Device Status</h2>
+            <h2>Device Status</h2>
             <div>Device Type: <span id="device">Loading...</span></div>
             <div>OS Security: <strong>PROTECTED</strong></div>
             <div>Browser Security: <strong>HIGH</strong></div>
-            <button onclick="checkDevice()">🔍 Check Device Security</button>
+            <button onclick="checkDevice()">Check Device Security</button>
         </div>
         
         <div class="section">
-            <h2>⚡ Incident Response & Agency Reporting</h2>
+            <h2>Incident Response & Agency Reporting</h2>
             <div>[MONITOR] Continuous monitoring active</div>
             <div>[DETECT] Behavioral analysis running</div>
             <div>[EMAIL] Anti-phishing shield active</div>
@@ -285,8 +336,8 @@
             <div>[MFA] Two-factor authentication enforced</div>
             <div>[VPN] Advanced VPN detection & CISA reporting enabled</div>
             <div>[PROTECT] All shields operational</div>
-            <button onclick="emergencyLockdown()">🚨 Emergency Lockdown</button>
-            <button onclick="reportToAgencies()">📢 Report to HSI/FBI/CISA/ICE NINE</button>
+            <button onclick="emergencyLockdown()">Emergency Lockdown</button>
+            <button onclick="reportToAgencies()">Report to HSI/FBI/CISA/ICE NINE</button>
         </div>
         
         <div class="alert">
@@ -302,6 +353,21 @@
         // Auth0 Configuration
         let auth0Client;
         
+        // Agreement Checkbox Enforcement
+        const authButton = document.getElementById('authButton');
+        const agreementCheckbox = document.getElementById('agreementCheckbox');
+        
+        agreementCheckbox.addEventListener('change', () => {
+            authButton.disabled = !agreementCheckbox.checked;
+            if (agreementCheckbox.checked) {
+                authButton.style.background = '#00ff00';
+                authButton.style.cursor = 'pointer';
+            } else {
+                authButton.style.background = '#666';
+                authButton.style.cursor = 'not-allowed';
+            }
+        });
+        
         async function initAuth0() {
             auth0Client = await createAuth0Client({
                 domain: 'dev-dis6657iu6w3e0sd.us.auth0.com',
@@ -315,6 +381,11 @@
 
         // Auth0 Login Function
         async function auth0Login() {
+            if (!agreementCheckbox.checked) {
+                showMessage('Please accept the user agreement to continue', 'error');
+                return;
+            }
+            
             if (!auth0Client) {
                 await initAuth0();
             }
@@ -331,7 +402,8 @@
                         email: user.email,
                         serial: 'HWF-2025-001',
                         password: '123456',
-                        mfaToken: token.__raw
+                        mfaToken: token.__raw,
+                        cisaAgreement: true // Flag that user accepted CISA agreement
                     })
                 });
                 
@@ -379,6 +451,7 @@
             detectIP();
             initializeStats();
             addAuthLog(`Professional access granted for ${userEmail}`);
+            addAuthLog(`CISA agreement accepted - AIS data sharing authorized`);
             
             // Initialize VPN Detection System
             initializeVPNDetection();
@@ -753,7 +826,7 @@
             }, 5000); // Run 5 seconds after authentication
         }
 
-        console.log('🛡️ HackerWatch-Fortress v2.3 Professional with VPN Detection Loaded');
+        console.log('HackerWatch-Fortress v2.3 Professional with VPN Detection Loaded');
         console.log('Contact: lexalytics@yahoo.com');
         console.log('Emmanuel - God With Us');
     </script>
