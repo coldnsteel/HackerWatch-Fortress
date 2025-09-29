@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- Updated for Auth0 fix -->
-<!-- comment to trigger vercel deployment with VPN detection -->
+<!-- Updated for Auth0 fix and Vercel deployment -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HackerWatch-Fortress v2.3 - Professional Security System</title>
     <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
     <style>
         body {
             font-family: 'Courier New', monospace;
@@ -243,7 +243,7 @@
             </div>
         </div>
         
-        <button id="authButton" onclick="auth0Login()" disabled>Authenticate & Access System</button>
+        <button id="authButton" disabled>Authenticate & Access System</button>
         <button onclick="requestDemo()">Try Demo Version</button>
         <div id="authMessage" class="message"></div>
         <p style="font-size: 0.9em; margin-top: 20px;">
@@ -348,7 +348,6 @@
         </div>
     </div>
     
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa.min.js"></script>
     <script src="security-config.js"></script>
     <script>
         // Auth0 Configuration
@@ -357,6 +356,7 @@
         // Agreement Checkbox Enforcement
         const authButton = document.getElementById('authButton');
         const agreementCheckbox = document.getElementById('agreementCheckbox');
+        const authMessage = document.getElementById('authMessage');
         
         agreementCheckbox.addEventListener('change', () => {
             authButton.disabled = !agreementCheckbox.checked;
@@ -370,14 +370,20 @@
         });
         
         async function initAuth0() {
-            auth0Client = await createAuth0Client({
-                domain: 'dev-dis6657iu6w3e0sd.us.auth0.com',
-                clientId: 'oRAdtDwHJoX1hpOtgp0yGGLWUgadusZP',
-                authorizationParams: {
-                    redirect_uri: window.location.origin,
-                    audience: 'https://hacker-watch-fortress.vercel.app/api'
-                }
-            });
+            try {
+                auth0Client = await createAuth0Client({
+                    domain: 'dev-dis6657iu6w3e0sd.us.auth0.com',
+                    clientId: 'EOsGN03oEKNfIKDH4bAWbpEXZ8GMG2cO',
+                    redirectUri: 'https://hacker-watch-fortress-new.vercel.app',
+                    audience: 'https://dev-dis6657iu6w3e0sd.us.auth0.com/api/v2/',
+                    scope: 'read:current_user'
+                });
+                authMessage.textContent = 'Ready';
+                authMessage.className = 'message success';
+            } catch (error) {
+                authMessage.textContent = 'Error: ' + error.message;
+                authMessage.className = 'message error';
+            }
         }
 
         // Auth0 Login Function
@@ -392,28 +398,22 @@
             }
             
             try {
-                await auth0Client.loginWithPopup();
-                const user = await auth0Client.getUser();
-                const token = await auth0Client.getIdTokenClaims();
-                
-                const response = await fetch('/api/auth', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: user.email,
-                        serial: 'HWF-2025-001',
-                        password: '123456',
-                        mfaToken: token.__raw,
-                        cisaAgreement: true // Flag that user accepted CISA agreement
-                    })
-                });
-                
-                const data = await response.json();
-                if (data.success) {
+                await auth0Client.loginWithRedirect();
+            } catch (error) {
+                showMessage('Authentication error: ' + error.message, 'error');
+                console.error('Auth0 error:', error);
+            }
+        }
+
+        // Check for redirect callback
+        async function checkAuthRedirect() {
+            try {
+                if (window.location.search.includes('code=')) {
+                    await auth0Client.handleRedirectCallback();
+                    const user = await auth0Client.getUser();
+                    window.history.replaceState({}, document.title, window.location.pathname);
                     showMainApp(user.email);
-                    showMessage('Authentication successful: ' + data.message, 'success');
-                } else {
-                    showMessage('Authentication failed: ' + data.message, 'error');
+                    showMessage('Authentication successful', 'success');
                 }
             } catch (error) {
                 showMessage('Authentication error: ' + error.message, 'error');
@@ -421,25 +421,20 @@
             }
         }
 
-        // Check for existing authentication on page load
-        document.addEventListener('DOMContentLoaded', async function() {
+        // Initialize Auth0 and check for existing session
+        document.addEventListener('DOMContentLoaded', async () => {
             await initAuth0();
-            
-            try {
-                const isAuthenticated = await auth0Client.isAuthenticated();
-                if (isAuthenticated) {
-                    const user = await auth0Client.getUser();
-                    showMainApp(user.email);
-                }
-            } catch (error) {
-                console.log('No existing auth session');
+            await checkAuthRedirect();
+            const isAuthenticated = await auth0Client.isAuthenticated();
+            if (isAuthenticated) {
+                const user = await auth0Client.getUser();
+                showMainApp(user.email);
             }
         });
 
         function showMessage(text, type) {
-            const messageEl = document.getElementById('authMessage');
-            messageEl.textContent = text;
-            messageEl.className = `message ${type}`;
+            authMessage.textContent = text;
+            authMessage.className = `message ${type}`;
         }
 
         function showMainApp(userEmail) {
@@ -490,7 +485,7 @@
             document.getElementById("device").textContent = deviceInfo;
         }
 
-        // IP detection (using hardcoded data as provided)
+        // IP detection
         function detectIP() {
             document.getElementById("ip").textContent = "174.195.83.177";
             document.getElementById("location").textContent = "Concord, California, US";
@@ -622,9 +617,7 @@
             alert("Emergency lockdown initiated. All systems secured.");
         }
 
-        // ========== VPN DETECTION & SECURITY ANALYSIS MODULE ==========
-        
-        // Enhanced VPN Detection & CISA Reporting
+        // VPN Detection & Security Analysis
         async function detectVPNStatus(currentIP) {
             try {
                 const now = new Date().toLocaleTimeString();
@@ -632,7 +625,6 @@
                     <div class="log-entry">[${now}] [VPN] Starting enhanced VPN detection analysis...</div>
                 `;
 
-                // Use multiple free APIs for VPN detection
                 const ipData = await fetch(`https://ipapi.co/${currentIP}/json/`).then(r => r.json()).catch(() => ({}));
                 const proxyData = await fetch(`https://ip-api.com/json/${currentIP}?fields=proxy,hosting,mobile`).then(r => r.json()).catch(() => ({}));
                 
@@ -649,33 +641,28 @@
                     asn: ipData.asn || 'Unknown'
                 };
                 
-                // VPN Detection Logic
                 const vpnIndicators = [
                     ipData.org?.toLowerCase().includes('vpn'),
                     ipData.org?.toLowerCase().includes('proxy'),
                     ipData.org?.toLowerCase().includes('tor'),
                     ipData.org?.toLowerCase().includes('anonymous'),
                     proxyData.hosting && !proxyData.mobile,
-                    ipData.asn?.includes('AS13335'), // Cloudflare
-                    ipData.asn?.includes('AS15169')  // Google
+                    ipData.asn?.includes('AS13335'),
+                    ipData.asn?.includes('AS15169')
                 ];
                 
                 vpnAnalysis.isVPN = vpnIndicators.filter(Boolean).length >= 2;
                 vpnAnalysis.isTor = ipData.org?.toLowerCase().includes('tor') || false;
                 
-                // Threat Assessment
                 if (vpnAnalysis.isTor) {
                     vpnAnalysis.threatLevel = 'HIGH';
                 } else if (vpnAnalysis.isVPN || vpnAnalysis.isProxy) {
                     vpnAnalysis.threatLevel = 'MEDIUM';
                 }
                 
-                // Log results to your existing log system
                 const logTime = new Date().toLocaleTimeString();
                 document.getElementById("logs").innerHTML += `
                     <div class="log-entry">[${logTime}] [VPN] IP: ${vpnAnalysis.ip} | Country: ${vpnAnalysis.country} | Org: ${vpnAnalysis.org}</div>
-                `;
-                document.getElementById("logs").innerHTML += `
                     <div class="log-entry">[${logTime}] [VPN] Status: ${vpnAnalysis.isVPN ? 'VPN DETECTED' : 'DIRECT CONNECTION'}</div>
                 `;
                 
@@ -695,7 +682,6 @@
                     <div class="log-entry">[${logTime}] [VPN] Threat Level: ${vpnAnalysis.threatLevel}</div>
                 `;
                 
-                // CISA Logging for high-risk threats
                 const cisaReportable = logAttackVector(vpnAnalysis);
                 if (cisaReportable) {
                     document.getElementById("logs").innerHTML += `
@@ -714,7 +700,6 @@
             }
         }
 
-        // CISA Attack Vector Logger
         function logAttackVector(vpnData) {
             if (vpnData.threatLevel === 'HIGH' || vpnData.isTor) {
                 const cisaLog = {
@@ -728,7 +713,6 @@
                     user: document.getElementById('authenticatedUser').textContent || 'Unknown'
                 };
                 
-                // Store for CISA reporting
                 try {
                     const existingLogs = JSON.parse(localStorage.getItem('cisa_attack_vectors') || '[]');
                     existingLogs.push(cisaLog);
@@ -747,7 +731,6 @@
             return false;
         }
 
-        // Enhanced runVPNCheck function (integrates with your system)
         async function runVPNCheck() {
             const currentIP = document.getElementById("ip").textContent || "174.195.83.177";
             
@@ -758,7 +741,6 @@
             
             const vpnData = await detectVPNStatus(currentIP);
             
-            // Update threat count if needed
             if (vpnData.threatLevel === 'HIGH' || vpnData.isTor) {
                 alertCount++;
                 document.getElementById("threatsBlocked").textContent = alertCount;
@@ -767,7 +749,6 @@
             return vpnData;
         }
 
-        // Generate CISA Report
         function generateCISAReport() {
             try {
                 const attackVectors = JSON.parse(localStorage.getItem('cisa_attack_vectors') || '[]');
@@ -816,7 +797,6 @@
             }
         }
 
-        // Initialize VPN Detection System after authentication
         function initializeVPNDetection() {
             setTimeout(() => {
                 const logTime = new Date().toLocaleTimeString();
@@ -824,7 +804,7 @@
                     <div class="log-entry">[${logTime}] [SYSTEM] Initializing VPN detection system...</div>
                 `;
                 runVPNCheck();
-            }, 5000); // Run 5 seconds after authentication
+            }, 5000);
         }
 
         console.log('HackerWatch-Fortress v2.3 Professional with VPN Detection Loaded');
