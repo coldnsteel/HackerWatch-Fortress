@@ -219,12 +219,10 @@
 <body>
     <div class="banner">HackerWatch-Fortress v2.3: Professional Security System with VPN Detection</div>
     
-    <!-- Authentication Form -->
     <div class="login-form" id="loginForm">
         <h2>Professional Access Authentication</h2>
         <p>Enter your registered credentials to access HackerWatch-Fortress</p>
         
-        <!-- CISA-Aligned User Agreement -->
         <div class="agreement-section">
             <h2>User Agreement</h2>
             <p>By accessing HackerWatch-Fortress v2.3 Professional, you agree to:</p>
@@ -243,7 +241,7 @@
             </div>
         </div>
         
-        <button id="authButton" disabled>Authenticate & Access System</button>
+        <button id="authButton" disabled onclick="auth0Login()">Authenticate & Access System</button>
         <button onclick="requestDemo()">Try Demo Version</button>
         <div id="authMessage" class="message"></div>
         <p style="font-size: 0.9em; margin-top: 20px;">
@@ -251,7 +249,6 @@
         </p>
     </div>
 
-    <!-- Main Application (Hidden until authenticated) -->
     <div id="mainApp" style="display: none;">
         <div class="header-stats">
             <span>Status: <strong id="systemStatus">OPERATIONAL</strong></span>
@@ -350,10 +347,7 @@
     
     <script src="security-config.js"></script>
     <script>
-        // Auth0 Configuration
         let auth0Client;
-        
-        // Agreement Checkbox Enforcement
         const authButton = document.getElementById('authButton');
         const agreementCheckbox = document.getElementById('agreementCheckbox');
         const authMessage = document.getElementById('authMessage');
@@ -374,9 +368,11 @@
                 auth0Client = await createAuth0Client({
                     domain: 'dev-dis6657iu6w3e0sd.us.auth0.com',
                     clientId: 'EOsGN03oEKNfIKDH4bAWbpEXZ8GMG2cO',
-                    redirectUri: 'https://hacker-watch-fortress-new.vercel.app',
-                    audience: 'https://dev-dis6657iu6w3e0sd.us.auth0.com/api/v2/',
-                    scope: 'read:current_user'
+                    authorizationParams: {
+                        redirect_uri: window.location.origin,
+                        audience: 'https://dev-dis6657iu6w3e0sd.us.auth0.com/api/v2/',
+                        scope: 'read:current_user openid profile email'
+                    }
                 });
                 authMessage.textContent = 'Ready';
                 authMessage.className = 'message success';
@@ -386,17 +382,12 @@
             }
         }
 
-        // Auth0 Login Function
         async function auth0Login() {
             if (!agreementCheckbox.checked) {
                 showMessage('Please accept the user agreement to continue', 'error');
                 return;
             }
-            
-            if (!auth0Client) {
-                await initAuth0();
-            }
-            
+            if (!auth0Client) await initAuth0();
             try {
                 await auth0Client.loginWithRedirect();
             } catch (error) {
@@ -405,7 +396,6 @@
             }
         }
 
-        // Check for redirect callback
         async function checkAuthRedirect() {
             try {
                 if (window.location.search.includes('code=')) {
@@ -421,7 +411,6 @@
             }
         }
 
-        // Initialize Auth0 and check for existing session
         document.addEventListener('DOMContentLoaded', async () => {
             await initAuth0();
             await checkAuthRedirect();
@@ -441,15 +430,11 @@
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
             document.getElementById('authenticatedUser').textContent = userEmail;
-            
-            // Initialize main application
             detectDevice();
             detectIP();
             initializeStats();
             addAuthLog(`Professional access granted for ${userEmail}`);
             addAuthLog(`CISA agreement accepted - AIS data sharing authorized`);
-            
-            // Initialize VPN Detection System
             initializeVPNDetection();
         }
 
@@ -457,35 +442,20 @@
             window.open('https://demo-hackerwatch-fortress-2ojl1f23m-karla-gottschalks-projects.vercel.app/', '_blank');
         }
 
-        // Device detection
         function detectDevice() {
             const userAgent = navigator.userAgent;
             let deviceInfo = "Unknown Device";
-            
-            if (userAgent.includes('Macintosh')) {
-                deviceInfo = "Mac Computer";
-            } else if (userAgent.includes('Mobile')) {
-                deviceInfo = "Mobile Device";
-            } else if (userAgent.includes('Tablet')) {
-                deviceInfo = "Tablet Device";
-            } else {
-                deviceInfo = "Desktop Computer";
-            }
-            
-            if (userAgent.includes('Chrome')) {
-                deviceInfo += " (Chrome)";
-            } else if (userAgent.includes('Firefox')) {
-                deviceInfo += " (Firefox)";
-            } else if (userAgent.includes('Safari')) {
-                deviceInfo += " (Safari)";
-            } else if (userAgent.includes('Edge')) {
-                deviceInfo += " (Edge)";
-            }
-            
+            if (userAgent.includes('Macintosh')) deviceInfo = "Mac Computer";
+            else if (userAgent.includes('Mobile')) deviceInfo = "Mobile Device";
+            else if (userAgent.includes('Tablet')) deviceInfo = "Tablet Device";
+            else deviceInfo = "Desktop Computer";
+            if (userAgent.includes('Chrome')) deviceInfo += " (Chrome)";
+            else if (userAgent.includes('Firefox')) deviceInfo += " (Firefox)";
+            else if (userAgent.includes('Safari')) deviceInfo += " (Safari)";
+            else if (userAgent.includes('Edge')) deviceInfo += " (Edge)";
             document.getElementById("device").textContent = deviceInfo;
         }
 
-        // IP detection
         function detectIP() {
             document.getElementById("ip").textContent = "174.195.83.177";
             document.getElementById("location").textContent = "Concord, California, US";
@@ -502,9 +472,7 @@
 
         function addAuthLog(message) {
             const now = new Date().toLocaleTimeString();
-            document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [AUTH] ${message}</div>
-            `;
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [AUTH] ${message}</div>`;
         }
 
         let alertCount = 0;
@@ -513,7 +481,6 @@
             const vpnStatus = document.getElementById("vpnStatus");
             const vpnProtection = document.getElementById("vpnProtectionStatus");
             const networkStatus = document.getElementById("networkStatus");
-            
             if (!vpnToggle) {
                 alertCount++;
                 document.getElementById("threatsBlocked").textContent = alertCount;
@@ -523,11 +490,8 @@
                 vpnProtection.className = "protection-status off";
                 networkStatus.textContent = "VULNERABLE";
                 networkStatus.style.color = "#ff0000";
-                
                 const now = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry log-warning">[${now}] [ALERT] Unsecured IP detected: 174.195.83.177 - Enable VPN protection</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry log-warning">[${now}] [ALERT] Unsecured IP detected: 174.195.83.177 - Enable VPN protection</div>`;
             } else {
                 vpnStatus.textContent = "Yes (Secured)";
                 vpnStatus.style.color = "#00ff00";
@@ -535,25 +499,17 @@
                 vpnProtection.className = "protection-status";
                 networkStatus.textContent = "SECURE";
                 networkStatus.style.color = "#00ff00";
-                
                 const now = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${now}] [INFO] VPN protection enabled - IP secured</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [INFO] VPN protection enabled - IP secured</div>`;
             }
         }
 
         function runScan() {
             const now = new Date().toLocaleTimeString();
-            document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [SCAN] Professional security scan initiated...</div>
-            `;
-            
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [SCAN] Professional security scan initiated...</div>`;
             setTimeout(() => {
                 const endTime = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${endTime}] [SCAN] Professional scan completed - All systems secure</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${endTime}] [SCAN] Professional scan completed - All systems secure</div>`;
                 document.getElementById("lastScan").textContent = endTime;
                 alert("Professional security scan completed successfully. All systems secure.");
             }, 2000);
@@ -561,30 +517,20 @@
 
         function scanNetwork() {
             const now = new Date().toLocaleTimeString();
-            document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [SCAN] Network scan initiated...</div>
-            `;
-            
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [SCAN] Network scan initiated...</div>`;
             setTimeout(() => {
                 const endTime = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${endTime}] [SCAN] Network scan completed - 3 secure ports detected</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${endTime}] [SCAN] Network scan completed - 3 secure ports detected</div>`;
                 alert("Network scan completed. 3 secure ports detected, no vulnerabilities found.");
             }, 1500);
         }
 
         function checkDevice() {
             const now = new Date().toLocaleTimeString();
-            document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [DEVICE] Device security check initiated...</div>
-            `;
-            
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [DEVICE] Device security check initiated...</div>`;
             setTimeout(() => {
                 const endTime = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${endTime}] [DEVICE] Device security check completed - Protected</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${endTime}] [DEVICE] Device security check completed - Protected</div>`;
                 alert("Device security check completed. Your device is protected.");
             }, 1000);
         }
@@ -592,42 +538,28 @@
         function reportToAgencies() {
             const now = new Date().toLocaleTimeString();
             const user = document.getElementById('authenticatedUser').textContent;
-            document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${now}] [AGENCY] Initiating report to government agencies...</div>
-            `;
-            
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [AGENCY] Initiating report to government agencies...</div>`;
             setTimeout(() => {
                 const endTime = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${endTime}] [AGENCY] Report submitted to HSI, FBI, CISA, ICE NINE by ${user}</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${endTime}] [AGENCY] Report submitted to HSI, FBI, CISA, ICE NINE by ${user}</div>`;
                 alert("Security incident reported to relevant government agencies (HSI, FBI, CISA, ICE NINE).");
             }, 2000);
         }
 
         function emergencyLockdown() {
             const now = new Date().toLocaleTimeString();
-            document.getElementById("logs").innerHTML += `
-                <div class="log-entry log-error">[${now}] [ALERT] [LOCKDOWN] Emergency lockdown initiated</div>
-            `;
-            
+            document.getElementById("logs").innerHTML += `<div class="log-entry log-error">[${now}] [ALERT] [LOCKDOWN] Emergency lockdown initiated</div>`;
             document.getElementById("systemStatus").textContent = "LOCKDOWN MODE";
             document.getElementById("systemStatus").style.color = "#ff0000";
-            
             alert("Emergency lockdown initiated. All systems secured.");
         }
 
-        // VPN Detection & Security Analysis
         async function detectVPNStatus(currentIP) {
             try {
                 const now = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${now}] [VPN] Starting enhanced VPN detection analysis...</div>
-                `;
-
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [VPN] Starting enhanced VPN detection analysis...</div>`;
                 const ipData = await fetch(`https://ipapi.co/${currentIP}/json/`).then(r => r.json()).catch(() => ({}));
                 const proxyData = await fetch(`https://ip-api.com/json/${currentIP}?fields=proxy,hosting,mobile`).then(r => r.json()).catch(() => ({}));
-                
                 const vpnAnalysis = {
                     ip: currentIP,
                     isVPN: false,
@@ -640,7 +572,6 @@
                     threatLevel: 'LOW',
                     asn: ipData.asn || 'Unknown'
                 };
-                
                 const vpnIndicators = [
                     ipData.org?.toLowerCase().includes('vpn'),
                     ipData.org?.toLowerCase().includes('proxy'),
@@ -650,52 +581,21 @@
                     ipData.asn?.includes('AS13335'),
                     ipData.asn?.includes('AS15169')
                 ];
-                
                 vpnAnalysis.isVPN = vpnIndicators.filter(Boolean).length >= 2;
                 vpnAnalysis.isTor = ipData.org?.toLowerCase().includes('tor') || false;
-                
-                if (vpnAnalysis.isTor) {
-                    vpnAnalysis.threatLevel = 'HIGH';
-                } else if (vpnAnalysis.isVPN || vpnAnalysis.isProxy) {
-                    vpnAnalysis.threatLevel = 'MEDIUM';
-                }
-                
+                if (vpnAnalysis.isTor) vpnAnalysis.threatLevel = 'HIGH';
+                else if (vpnAnalysis.isVPN || vpnAnalysis.isProxy) vpnAnalysis.threatLevel = 'MEDIUM';
                 const logTime = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${logTime}] [VPN] IP: ${vpnAnalysis.ip} | Country: ${vpnAnalysis.country} | Org: ${vpnAnalysis.org}</div>
-                    <div class="log-entry">[${logTime}] [VPN] Status: ${vpnAnalysis.isVPN ? 'VPN DETECTED' : 'DIRECT CONNECTION'}</div>
-                `;
-                
-                if (vpnAnalysis.isTor) {
-                    document.getElementById("logs").innerHTML += `
-                        <div class="log-entry log-error">[${logTime}] [TOR] TOR network detected - High security risk</div>
-                    `;
-                }
-                
-                if (vpnAnalysis.isProxy) {
-                    document.getElementById("logs").innerHTML += `
-                        <div class="log-entry log-warning">[${logTime}] [PROXY] Proxy connection detected</div>
-                    `;
-                }
-                
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${logTime}] [VPN] Threat Level: ${vpnAnalysis.threatLevel}</div>
-                `;
-                
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [VPN] IP: ${vpnAnalysis.ip} | Country: ${vpnAnalysis.country} | Org: ${vpnAnalysis.org}</div><div class="log-entry">[${logTime}] [VPN] Status: ${vpnAnalysis.isVPN ? 'VPN DETECTED' : 'DIRECT CONNECTION'}</div>`;
+                if (vpnAnalysis.isTor) document.getElementById("logs").innerHTML += `<div class="log-entry log-error">[${logTime}] [TOR] TOR network detected - High security risk</div>`;
+                if (vpnAnalysis.isProxy) document.getElementById("logs").innerHTML += `<div class="log-entry log-warning">[${logTime}] [PROXY] Proxy connection detected</div>`;
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [VPN] Threat Level: ${vpnAnalysis.threatLevel}</div>`;
                 const cisaReportable = logAttackVector(vpnAnalysis);
-                if (cisaReportable) {
-                    document.getElementById("logs").innerHTML += `
-                        <div class="log-entry log-warning">[${logTime}] [CISA] Attack vector logged for government reporting</div>
-                    `;
-                }
-                
+                if (cisaReportable) document.getElementById("logs").innerHTML += `<div class="log-entry log-warning">[${logTime}] [CISA] Attack vector logged for government reporting</div>`;
                 return vpnAnalysis;
-                
             } catch (error) {
                 const errorTime = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry log-error">[${errorTime}] [ERROR] VPN Detection failed: ${error.message}</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry log-error">[${errorTime}] [ERROR] VPN Detection failed: ${error.message}</div>`;
                 return { ip: currentIP, error: 'Detection failed', threatLevel: 'UNKNOWN' };
             }
         }
@@ -712,16 +612,12 @@
                     cisa_reportable: true,
                     user: document.getElementById('authenticatedUser').textContent || 'Unknown'
                 };
-                
                 try {
                     const existingLogs = JSON.parse(localStorage.getItem('cisa_attack_vectors') || '[]');
                     existingLogs.push(cisaLog);
                     localStorage.setItem('cisa_attack_vectors', JSON.stringify(existingLogs));
-                    
                     const logTime = new Date().toLocaleTimeString();
-                    document.getElementById("logs").innerHTML += `
-                        <div class="log-entry log-warning">[${logTime}] [CISA] THREAT DETECTED: ${cisaLog.threat_type} from ${vpnData.country} - ${vpnData.org}</div>
-                    `;
+                    document.getElementById("logs").innerHTML += `<div class="log-entry log-warning">[${logTime}] [CISA] THREAT DETECTED: ${cisaLog.threat_type} from ${vpnData.country} - ${vpnData.org}</div>`;
                     return true;
                 } catch (error) {
                     console.error('CISA logging error:', error);
@@ -733,19 +629,13 @@
 
         async function runVPNCheck() {
             const currentIP = document.getElementById("ip").textContent || "174.195.83.177";
-            
             const logTime = new Date().toLocaleTimeString();
-            document.getElementById("logs").innerHTML += `
-                <div class="log-entry">[${logTime}] [SYSTEM] Running enhanced VPN detection analysis...</div>
-            `;
-            
-            const vpnData = await detectVPNStatus(currentIP);
-            
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [SYSTEM] Running enhanced VPN detection analysis...</div>`;
+const vpnData = await detectVPNStatus(currentIP);
             if (vpnData.threatLevel === 'HIGH' || vpnData.isTor) {
                 alertCount++;
                 document.getElementById("threatsBlocked").textContent = alertCount;
             }
-            
             return vpnData;
         }
 
@@ -753,14 +643,9 @@
             try {
                 const attackVectors = JSON.parse(localStorage.getItem('cisa_attack_vectors') || '[]');
                 const highThreats = attackVectors.filter(av => av.severity === 'HIGH');
-                
                 const logTime = new Date().toLocaleTimeString();
-                
                 if (highThreats.length > 0) {
-                    document.getElementById("logs").innerHTML += `
-                        <div class="log-entry log-warning">[${logTime}] [CISA] ${highThreats.length} high-severity threats ready for reporting</div>
-                    `;
-                    
+                    document.getElementById("logs").innerHTML += `<div class="log-entry log-warning">[${logTime}] [CISA] ${highThreats.length} high-severity threats ready for reporting</div>`;
                     const report = {
                         organization: 'HackerWatch-Fortress',
                         timestamp: new Date().toISOString(),
@@ -773,26 +658,18 @@
                             timestamp: t.timestamp
                         }))
                     };
-                    
                     console.log('CISA Report Ready:', report);
-                    document.getElementById("logs").innerHTML += `
-                        <div class="log-entry">[${logTime}] [CISA] Report generated - Ready for submission</div>
-                    `;
-                    
+                    document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [CISA] Report generated - Ready for submission</div>`;
                     alert(`CISA Report Generated: ${highThreats.length} high-severity threats detected. Report saved to browser storage.`);
                     return report;
                 } else {
-                    document.getElementById("logs").innerHTML += `
-                        <div class="log-entry">[${logTime}] [CISA] No reportable threats at this time</div>
-                    `;
+                    document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [CISA] No reportable threats at this time</div>`;
                     alert('No high-severity threats detected. No CISA report needed at this time.');
                     return null;
                 }
             } catch (error) {
                 const errorTime = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry log-error">[${errorTime}] [ERROR] CISA report generation failed: ${error.message}</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry log-error">[${errorTime}] [ERROR] CISA report generation failed: ${error.message}</div>`;
                 return null;
             }
         }
@@ -800,9 +677,7 @@
         function initializeVPNDetection() {
             setTimeout(() => {
                 const logTime = new Date().toLocaleTimeString();
-                document.getElementById("logs").innerHTML += `
-                    <div class="log-entry">[${logTime}] [SYSTEM] Initializing VPN detection system...</div>
-                `;
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [SYSTEM] Initializing VPN detection system...</div>`;
                 runVPNCheck();
             }, 5000);
         }
