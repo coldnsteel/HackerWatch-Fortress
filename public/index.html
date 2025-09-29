@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HackerWatch-Fortress v2.3 - Professional Security System</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
-    <!-- CSS styles (from your Sep 29, 1:12 PM message) -->
+    <!-- CSS styles (unchanged from your Sep 29, 2:06 PM) -->
 </head>
 <body>
     <div class="banner">HackerWatch-Fortress v2.3: Professional Security System with VPN Detection</div>
@@ -14,18 +14,17 @@
         <h2>Professional Access Authentication</h2>
         <div class="agreement-section">
             <h2>User Agreement</h2>
-            <!-- CISA agreement UI -->
             <div class="agreement-checkbox">
                 <label><input type="checkbox" id="agreementCheckbox" required> I agree to the terms above and authorize CISA data sharing</label>
             </div>
         </div>
         <button id="authButton" disabled onclick="auth0Login()">Authenticate & Access System</button>
-        <!-- Rest of UI -->
+        <div id="authMessage">Initializing...</div>
     </div>
     <div id="mainApp" style="display: none;">
         <!-- Dashboard UI -->
     </div>
-    <script src="security-config.js"></script>
+    <script src="/public/security-config.js"></script>
     <script>
         let auth0Client;
         async function initAuth0() {
@@ -82,7 +81,6 @@
                 showMainApp(user.email);
             }
         });
-        // Rest of JavaScript (VPN detection, logs, etc.)
     </script>
 </body>
 </html>
