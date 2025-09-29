@@ -3,53 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackerWatch-Fortress Dashboard</title>
+    <title>HackerWatch-Fortress v2.3 - Professional Security System</title>
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+    <!-- CSS styles (from your Sep 29, 1:12 PM message) -->
 </head>
 <body>
-    <h1>HackerWatch-Fortress Dashboard</h1>
-    <button onclick="login()">Authenticate & Access System</button>
-    <div id="status">Initializing...</div>
-    
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa.min.js"></script>
+    <div class="banner">HackerWatch-Fortress v2.3: Professional Security System with VPN Detection</div>
+    <div class="login-form" id="loginForm">
+        <h2>Professional Access Authentication</h2>
+        <div class="agreement-section">
+            <h2>User Agreement</h2>
+            <!-- CISA agreement UI -->
+            <div class="agreement-checkbox">
+                <label><input type="checkbox" id="agreementCheckbox" required> I agree to the terms above and authorize CISA data sharing</label>
+            </div>
+        </div>
+        <button id="authButton" disabled onclick="auth0Login()">Authenticate & Access System</button>
+        <!-- Rest of UI -->
+    </div>
+    <div id="mainApp" style="display: none;">
+        <!-- Dashboard UI -->
+    </div>
+    <script src="security-config.js"></script>
     <script>
-        async function login() {
-            const auth0 = await createAuth0Client({
-                domain: 'dev-dis6657iu6w3e0sd.us.auth0.com',
-                clientId: 'oRAdtDwHJoX1hpOtgp0yGGLWUgadusZP',
-                authorizationParams: {
-                    redirect_uri: window.location.origin
-                }
-            });
-            
+        let auth0Client;
+        async function initAuth0() {
             try {
-                await auth0.loginWithPopup();
-                const user = await auth0.getUser();
-                const token = await auth0.getTokenSilently();
-                
-                // Send login request to your backend
-                const response = await fetch('/api/auth', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: user.email,
-                        serial: 'HWF-2025-001',
-                        password: '123456',
-                        mfaToken: token
-                    })
+                auth0Client = await createAuth0Client({
+                    domain: 'dev-dis6657iu6w3e0sd.us.auth0.com',
+                    clientId: 'EOsGN03oEKNfIKDH4bAWbpEXZ8GMG2cO',
+                    authorizationParams: {
+                        redirect_uri: window.location.origin,
+                        audience: 'https://dev-dis6657iu6w3e0sd.us.auth0.com/api/v2/',
+                        scope: 'read:current_user openid profile email'
+                    }
                 });
-                
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('status').textContent = 'Logged in: ' + data.message;
-                    // Load dashboard features here
-                } else {
-                    document.getElementById('status').textContent = 'Login failed: ' + data.message;
-                }
+                document.getElementById('authMessage').textContent = 'Ready';
+                document.getElementById('authMessage').className = 'message success';
             } catch (error) {
-                document.getElementById('status').textContent = 'Error: ' + error.message;
-                console.error('Login error:', error);
+                document.getElementById('authMessage').textContent = 'Error: ' + error.message;
+                document.getElementById('authMessage').className = 'message error';
             }
         }
+        async function auth0Login() {
+            if (!document.getElementById('agreementCheckbox').checked) {
+                showMessage('Please accept the user agreement to continue', 'error');
+                return;
+            }
+            if (!auth0Client) await initAuth0();
+            try {
+                await auth0Client.loginWithRedirect();
+            } catch (error) {
+                showMessage('Authentication error: ' + error.message, 'error');
+                console.error('Auth0 error:', error);
+            }
+        }
+        async function checkAuthRedirect() {
+            try {
+                if (window.location.search.includes('code=')) {
+                    await auth0Client.handleRedirectCallback();
+                    const user = await auth0Client.getUser();
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    showMainApp(user.email);
+                    showMessage('Authentication successful', 'success');
+                }
+            } catch (error) {
+                showMessage('Authentication error: ' + error.message, 'error');
+                console.error('Auth0 error:', error);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initAuth0();
+            await checkAuthRedirect();
+            const isAuthenticated = await auth0Client.isAuthenticated();
+            if (isAuthenticated) {
+                const user = await auth0Client.getUser();
+                showMainApp(user.email);
+            }
+        });
+        // Rest of JavaScript (VPN detection, logs, etc.)
     </script>
 </body>
 </html>
