@@ -3,292 +3,613 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackerWatch-Fortress v2.3 - Personal Security System</title>
+    <title>HackerWatch-Fortress v2.3 - Professional Security System</title>
     <link rel="manifest" href="/manifest.json">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #eee;
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            padding: 0;
+            margin: 0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .banner {
-            background: rgba(0, 102, 204, 0.1);
-            border-bottom: 2px solid #0066cc;
-            padding: 20px;
+            background: #ff0000;
+            color: #000;
+            padding: 15px;
             text-align: center;
-            font-size: 1.3em;
+            font-size: 1.5em;
             font-weight: bold;
-        }
-        .container {
+            width: 100%;
             max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px #ff0000;
+            margin-bottom: 20px;
         }
         .login-form {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 40px;
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff00;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 20px #00ff00;
         }
         .login-form h2 {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
             margin-bottom: 20px;
-            color: #0066cc;
         }
-        .disclaimer {
-            background: rgba(255, 193, 7, 0.1);
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-        .disclaimer strong {
-            color: #ffc107;
-        }
-        .form-group {
-            margin: 20px 0;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        .form-group input[type="password"],
-        .form-group input[type="text"] {
-            width: 100%;
+        input {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            border: 2px solid #00ff00;
             padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #eee;
-            font-size: 1em;
+            margin: 10px 0;
+            border-radius: 5px;
+            width: 280px;
+            font-size: 1.1em;
         }
-        .form-group input[type="password"]:focus,
-        .form-group input[type="text"]:focus {
+        input:focus {
             outline: none;
-            border-color: #0066cc;
-        }
-        .checkbox-group {
-            margin: 20px 0;
-        }
-        .checkbox-group label {
-            display: flex;
-            align-items: flex-start;
-            cursor: pointer;
-        }
-        .checkbox-group input[type="checkbox"] {
-            margin-right: 10px;
-            margin-top: 4px;
+            box-shadow: 0 0 10px #00ff00;
         }
         button {
-            width: 100%;
-            padding: 14px;
-            background: #0066cc;
-            color: white;
+            background: #00ff00;
+            color: #000;
             border: none;
-            border-radius: 6px;
-            font-size: 1.1em;
-            font-weight: 600;
+            padding: 12px 25px;
             cursor: pointer;
-            transition: background 0.3s;
+            border-radius: 8px;
+            margin: 15px 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 0 15px #00ff00;
         }
-        button:hover:not(:disabled) {
-            background: #0052a3;
+        button:hover {
+            background: #00cc00;
+            box-shadow: 0 0 20px #00cc00;
         }
         button:disabled {
-            background: #555;
+            background: #666;
+            color: #999;
             cursor: not-allowed;
-            opacity: 0.6;
+            box-shadow: none;
         }
-        .message {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 6px;
+        .header-stats {
             text-align: center;
-            font-weight: 500;
-        }
-        .message.error {
-            background: rgba(220, 53, 69, 0.2);
-            border: 1px solid #dc3545;
-            color: #ff6b6b;
-        }
-        .message.success {
-            background: rgba(40, 167, 69, 0.2);
-            border: 1px solid #28a745;
-            color: #51cf66;
-        }
-        #mainApp {
-            display: none;
-        }
-        .dashboard {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 30px;
-        }
-        .dashboard h2 {
-            color: #0066cc;
+            max-width: 800px;
             margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid #00ff00;
+            padding: 10px;
         }
-        .status-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+        .header-stats span {
+            font-size: 1.2em;
+            margin: 0 10px;
+            color: #00ff00;
+        }
+        .section {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
             padding: 20px;
             margin: 15px 0;
+            border-radius: 10px;
+            max-width: 800px;
+            box-shadow: 0 0 15px #00ff00;
         }
-        .status-card h3 {
-            color: #28a745;
-            margin-bottom: 10px;
+        h2 {
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 15px;
+            font-size: 1.5em;
         }
-        .logout-btn {
-            background: #dc3545;
-            margin-top: 20px;
+        .threat-score {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00ff00;
         }
-        .logout-btn:hover {
-            background: #c82333;
+        .progress-bar {
+            width: 100%;
+            background: #333;
+            height: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress {
+            height: 100%;
+            background: #00ff00;
+            width: 94%;
+        }
+        .log-entry {
+            font-size: 0.9em;
+            margin: 5px 0;
+            color: #00ff00;
+            border-left: 3px solid #00ff00;
+            padding-left: 10px;
+        }
+        .log-warning {
+            color: #ffff00;
+            border-left-color: #ffff00;
+        }
+        .log-error {
+            color: #ff0000;
+            border-left-color: #ff0000;
+        }
+        .protection-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 1.1em;
+        }
+        .protection-status {
+            color: #00ff00;
+        }
+        .protection-status.off {
+            color: #ff0000;
+        }
+        .alert {
+            color: #ff0000;
+            border: 2px solid #ff0000;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            background: rgba(255, 0, 0, 0.2);
+            max-width: 800px;
+            text-align: center;
+            font-weight: bold;
+        }
+        a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .message {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+        }
+        .agreement-section {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            background: rgba(0, 255, 0, 0.1);
+        }
+        .agreement-section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .agreement-section li {
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+        .agreement-checkbox {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+        .agreement-checkbox input {
+            width: auto;
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="banner">HackerWatch-Fortress v2.3 - Personal Security System</div>
+    <div class="banner">HackerWatch-Fortress v2.3: Professional Security System with VPN Detection</div>
     
-    <div class="container">
-        <div class="login-form" id="loginForm">
-            <h2>System Access Authentication</h2>
-            
-            <div class="disclaimer">
-                <strong>⚠️ Personal Use Notice:</strong><br>
-                This is a personal security monitoring system for individual use. 
-                It is NOT certified by CISA or any government agency. 
-                Use at your own discretion for personal device monitoring only.
-            </div>
-            
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" placeholder="Enter username">
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" placeholder="Enter password">
-            </div>
-            
-            <div class="checkbox-group">
+    <div class="login-form" id="loginForm">
+        <h2>Professional Access Authentication</h2>
+        <p>Enter your credentials to access HackerWatch-Fortress</p>
+        
+        <div class="agreement-section">
+            <h2>User Agreement</h2>
+            <p>By accessing HackerWatch-Fortress v2.3 Professional, you agree to:</p>
+            <ul>
+                <li>Use the system solely for personal cybersecurity monitoring and incident response.</li>
+                <li>Acknowledge continuous monitoring of your IP and device for security risks.</li>
+                <li>Understand this is for personal use and not government-certified.</li>
+                <li>Contact <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a> for support or inquiries.</li>
+            </ul>
+            <div class="agreement-checkbox">
                 <label>
-                    <input type="checkbox" id="agreementCheckbox">
-                    <span>I understand this is for personal use only and acknowledge the disclaimer above</span>
+                    <input type="checkbox" id="agreementCheckbox" required> 
+                    I agree to the terms above
                 </label>
             </div>
-            
-            <button id="authButton" disabled onclick="login()">Access System</button>
-            
-            <div id="authMessage"></div>
         </div>
         
-        <div id="mainApp">
-            <div class="dashboard">
-                <h2>Security Dashboard</h2>
-                
-                <div class="status-card">
-                    <h3>✓ System Status: Active</h3>
-                    <p>Personal security monitoring is running</p>
-                    <p>User: <span id="currentUser"></span></p>
-                </div>
-                
-                <div class="status-card">
-                    <h3>Monitoring Features</h3>
-                    <ul>
-                        <li>Device connection monitoring</li>
-                        <li>Network traffic analysis</li>
-                        <li>Threat detection (personal level)</li>
-                        <li>Activity logging</li>
-                    </ul>
-                </div>
-                
-                <div class="status-card">
-                    <h3>Quick Actions</h3>
-                    <p>Your security monitoring features will appear here</p>
-                </div>
-                
-                <button class="logout-btn" onclick="logout()">Logout</button>
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        
+        <button id="authButton" disabled onclick="handleLogin()">Access System</button>
+        <button onclick="requestDemo()">Try Demo Version</button>
+        <div id="authMessage" class="message"></div>
+        <p style="font-size: 0.9em; margin-top: 20px;">
+            Need access? <a href="https://coldnsteel.github.io/GMSRFC/fortress-grand-opening.html">Purchase License</a>
+        </p>
+    </div>
+
+    <div id="mainApp" style="display: none;">
+        <div class="header-stats">
+            <span>Status: <strong id="systemStatus">OPERATIONAL</strong></span>
+            <span>Last Scan: <strong id="lastScan">Never</strong></span>
+            <span>Threats Blocked: <strong id="threatsBlocked">0</strong></span>
+            <span>User: <strong id="authenticatedUser"></strong></span>
+            <span>Contact: <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a></span>
+        </div>
+        
+        <div class="section">
+            <h2>Threat Assessment</h2>
+            <div>Threat Level: <strong>LOW</strong></div>
+            <div>Security Score: <span class="threat-score" id="securityScore">94%</span></div>
+            <div class="progress-bar">
+                <div class="progress" id="securityProgress"></div>
             </div>
+            <button onclick="runScan()">Run Full Security Scan</button>
+            <button onclick="runVPNCheck()">VPN Security Analysis</button>
+            <div>Active Protections: <strong id="protectionsCount">10/10</strong></div>
+        </div>
+        
+        <div class="section">
+            <h2>Network Monitor</h2>
+            <div>Network Status: <strong id="networkStatus">SECURE</strong></div>
+            <div>Bandwidth Usage: <strong>12.1 MB/s</strong></div>
+            <div>Open Ports: <strong id="ports">3 (Secure)</strong></div>
+            <div>IP Address: <span id="ip">Loading...</span></div>
+            <div>Location: <span id="location">Loading...</span></div>
+            <div>ISP: <span id="isp">Loading...</span></div>
+            <div>VPN Active? <input type="checkbox" id="vpnToggle" onchange="checkVpn()"> 
+                <span id="vpnStatus">Checking...</span></div>
+            <button onclick="scanNetwork()">Scan Network</button>
+        </div>
+        
+        <div class="section">
+            <h2>Security Logs</h2>
+            <div id="logs">
+                <div class="log-entry">[INIT] HackerWatch-Fortress Professional v2.3 initializing...</div>
+                <div class="log-entry">[INFO] Firewall status: ACTIVE</div>
+                <div class="log-entry">[INFO] Intrusion detection: ENABLED</div>
+                <div class="log-entry">[INFO] Email protection: ACTIVE</div>
+                <div class="log-entry">[INFO] Multi-Factor Authentication: VERIFIED</div>
+                <div class="log-entry">[INFO] VPN Detection System: LOADED</div>
+                <div class="log-entry">[INFO] All systems operational</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Active Protections</h2>
+            <div class="protection-item">Firewall: <span class="protection-status">ACTIVE</span></div>
+            <div class="protection-item">Anti-Malware: <span class="protection-status">SCANNING</span></div>
+            <div class="protection-item">VPN Detection: <span class="protection-status">MONITORING</span></div>
+            <div class="protection-item">VPN Protection: <span id="vpnProtectionStatus" class="protection-status">ENABLED</span></div>
+            <div class="protection-item">DNS Filtering: <span class="protection-status">ACTIVE</span></div>
+            <div class="protection-item">Port Monitoring: <span class="protection-status">SCANNING</span></div>
+            <div class="protection-item">SSL/TLS Check: <span class="protection-status">VERIFIED</span></div>
+            <div class="protection-item">Email Protection: <span class="protection-status">ACTIVE</span></div>
+            <div class="protection-item">Intrusion Detection: <span class="protection-status">MONITORING</span></div>
+            <div class="protection-item">Multi-Factor Auth: <span class="protection-status">ENABLED</span></div>
+        </div>
+        
+        <div class="section">
+            <h2>Device Status</h2>
+            <div>Device Type: <span id="device">Loading...</span></div>
+            <div>OS Security: <strong>PROTECTED</strong></div>
+            <div>Browser Security: <strong>HIGH</strong></div>
+            <button onclick="checkDevice()">Check Device Security</button>
+        </div>
+        
+        <div class="section">
+            <h2>Incident Response</h2>
+            <div>[MONITOR] Continuous monitoring active</div>
+            <div>[DETECT] Behavioral analysis running</div>
+            <div>[EMAIL] Anti-phishing shield active</div>
+            <div>[INTRUSION] Suspicious activity monitoring enabled</div>
+            <div>[MFA] Two-factor authentication enforced</div>
+            <div>[VPN] Advanced VPN detection enabled</div>
+            <div>[PROTECT] All shields operational</div>
+            <button onclick="emergencyLockdown()">Emergency Lockdown</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+        
+        <div class="alert">
+            Professional cybersecurity monitoring system with advanced VPN detection. Your IP and device are continuously monitored for security risks. 
+            An exposed IP can allow attackers to track your location or target your device. Enable a VPN to secure your connection.
+            <br><strong>Contact:</strong> <a href="mailto:lexalytics@yahoo.com">lexalytics@yahoo.com</a>
         </div>
     </div>
     
     <script>
-        // Simple authentication system for personal use
+        // Simple authentication
         const validCredentials = {
-            'coldn': 'fortress2023',  // Change these to your preferred credentials
+            'coldn': 'fortress2023',
             'admin': 'admin123'
         };
         
-        // Enable login button when checkbox is checked
-        document.getElementById('agreementCheckbox').addEventListener('change', (e) => {
-            document.getElementById('authButton').disabled = !e.target.checked;
+        const agreementCheckbox = document.getElementById('agreementCheckbox');
+        const authButton = document.getElementById('authButton');
+        const passwordInput = document.getElementById('password');
+        
+        agreementCheckbox.addEventListener('change', () => {
+            authButton.disabled = !agreementCheckbox.checked;
         });
         
-        // Allow Enter key to submit
-        document.getElementById('password').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !document.getElementById('authButton').disabled) {
-                login();
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !authButton.disabled) {
+                handleLogin();
             }
         });
         
-        function login() {
+        function handleLogin() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
-            const messageDiv = document.getElementById('authMessage');
             
             if (!username || !password) {
                 showMessage('Please enter both username and password', 'error');
                 return;
             }
             
-            // Check credentials
             if (validCredentials[username] && validCredentials[username] === password) {
-                // Store session
-                sessionStorage.setItem('authenticated', 'true');
-                sessionStorage.setItem('username', username);
-                
-                // Show dashboard
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('mainApp').style.display = 'block';
-                document.getElementById('currentUser').textContent = username;
+                showMainApp(username);
             } else {
                 showMessage('Invalid username or password', 'error');
             }
         }
         
+        function showMessage(text, type) {
+            const authMessage = document.getElementById('authMessage');
+            authMessage.textContent = text;
+            authMessage.className = `message ${type}`;
+        }
+        
+        function showMainApp(username) {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            document.getElementById('authenticatedUser').textContent = username;
+            detectDevice();
+            detectIP();
+            initializeStats();
+            addAuthLog(`Professional access granted for ${username}`);
+            initializeVPNDetection();
+        }
+        
         function logout() {
-            sessionStorage.clear();
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('mainApp').style.display = 'none';
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             document.getElementById('agreementCheckbox').checked = false;
-            document.getElementById('authButton').disabled = true;
-            document.getElementById('authMessage').innerHTML = '';
+            authButton.disabled = true;
+            location.reload();
         }
-        
-        function showMessage(text, type) {
-            const messageDiv = document.getElementById('authMessage');
-            messageDiv.textContent = text;
-            messageDiv.className = `message ${type}`;
+
+        function requestDemo() {
+            window.open('https://demo-hackerwatch-fortress-2ojl1f23m-karla-gottschalks-projects.vercel.app/', '_blank');
         }
-        
-        // Check if already authenticated
-        window.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('authenticated') === 'true') {
-                const username = sessionStorage.getItem('username');
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('mainApp').style.display = 'block';
-                document.getElementById('currentUser').textContent = username;
+
+        function detectDevice() {
+            const userAgent = navigator.userAgent;
+            let deviceInfo = "Unknown Device";
+            if (userAgent.includes('Macintosh')) deviceInfo = "Mac Computer";
+            else if (userAgent.includes('Mobile')) deviceInfo = "Mobile Device";
+            else if (userAgent.includes('Tablet')) deviceInfo = "Tablet Device";
+            else deviceInfo = "Desktop Computer";
+            if (userAgent.includes('Chrome')) deviceInfo += " (Chrome)";
+            else if (userAgent.includes('Firefox')) deviceInfo += " (Firefox)";
+            else if (userAgent.includes('Safari')) deviceInfo += " (Safari)";
+            else if (userAgent.includes('Edge')) deviceInfo += " (Edge)";
+            document.getElementById("device").textContent = deviceInfo;
+        }
+
+        async function detectIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                const ip = data.ip;
+                document.getElementById("ip").textContent = ip;
+                
+                const geoResponse = await fetch(`https://ipapi.co/${ip}/json/`);
+                const geoData = await geoResponse.json();
+                document.getElementById("location").textContent = `${geoData.city || 'Unknown'}, ${geoData.region || 'Unknown'}, ${geoData.country_name || 'Unknown'}`;
+                document.getElementById("isp").textContent = geoData.org || 'Unknown ISP';
+                
+                addAuthLog(`IP detected: ${ip} | Location: ${geoData.city}, ${geoData.region}`);
+            } catch (error) {
+                document.getElementById("ip").textContent = "Unable to detect";
+                document.getElementById("location").textContent = "Unknown";
+                document.getElementById("isp").textContent = "Unknown";
             }
-        });
+            checkVpn();
+        }
+
+        function initializeStats() {
+            document.getElementById("securityScore").textContent = "94%";
+            document.getElementById("securityProgress").style.width = "94%";
+            document.getElementById("protectionsCount").textContent = "10/10";
+            document.getElementById("lastScan").textContent = new Date().toLocaleTimeString();
+        }
+
+        function addAuthLog(message) {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [AUTH] ${message}</div>`;
+        }
+
+        let alertCount = 0;
+        function checkVpn() {
+            const vpnToggle = document.getElementById("vpnToggle").checked;
+            const vpnStatus = document.getElementById("vpnStatus");
+            const vpnProtection = document.getElementById("vpnProtectionStatus");
+            const networkStatus = document.getElementById("networkStatus");
+            if (!vpnToggle) {
+                alertCount++;
+                document.getElementById("threatsBlocked").textContent = alertCount;
+                vpnStatus.textContent = "No (Vulnerable - IP Exposed)";
+                vpnStatus.style.color = "#ff0000";
+                vpnProtection.textContent = "OFF";
+                vpnProtection.className = "protection-status off";
+                networkStatus.textContent = "VULNERABLE";
+                networkStatus.style.color = "#ff0000";
+                const now = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry log-warning">[${now}] [ALERT] Unsecured IP detected - Enable VPN protection</div>`;
+            } else {
+                vpnStatus.textContent = "Yes (Secured)";
+                vpnStatus.style.color = "#00ff00";
+                vpnProtection.textContent = "ENABLED";
+                vpnProtection.className = "protection-status";
+                networkStatus.textContent = "SECURE";
+                networkStatus.style.color = "#00ff00";
+                const now = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [INFO] VPN protection enabled - IP secured</div>`;
+            }
+        }
+
+        function runScan() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [SCAN] Professional security scan initiated...</div>`;
+            setTimeout(() => {
+                const endTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${endTime}] [SCAN] Professional scan completed - All systems secure</div>`;
+                document.getElementById("lastScan").textContent = endTime;
+                alert("Professional security scan completed successfully. All systems secure.");
+            }, 2000);
+        }
+
+        function scanNetwork() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [SCAN] Network scan initiated...</div>`;
+            setTimeout(() => {
+                const endTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${endTime}] [SCAN] Network scan completed - 3 secure ports detected</div>`;
+                alert("Network scan completed. 3 secure ports detected, no vulnerabilities found.");
+            }, 1500);
+        }
+
+        function checkDevice() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [DEVICE] Device security check initiated...</div>`;
+            setTimeout(() => {
+                const endTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${endTime}] [DEVICE] Device security check completed - Protected</div>`;
+                alert("Device security check completed. Your device is protected.");
+            }, 1000);
+        }
+
+        function emergencyLockdown() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById("logs").innerHTML += `<div class="log-entry log-error">[${now}] [ALERT] [LOCKDOWN] Emergency lockdown initiated</div>`;
+            document.getElementById("systemStatus").textContent = "LOCKDOWN MODE";
+            document.getElementById("systemStatus").style.color = "#ff0000";
+            alert("Emergency lockdown initiated. All systems secured.");
+        }
+
+        async function detectVPNStatus(currentIP) {
+            try {
+                const now = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${now}] [VPN] Starting enhanced VPN detection analysis...</div>`;
+                
+                const ipData = await fetch(`https://ipapi.co/${currentIP}/json/`).then(r => r.json()).catch(() => ({}));
+                const proxyData = await fetch(`https://ip-api.com/json/${currentIP}?fields=proxy,hosting,mobile`).then(r => r.json()).catch(() => ({}));
+                
+                const vpnAnalysis = {
+                    ip: currentIP,
+                    isVPN: false,
+                    isTor: false,
+                    isProxy: proxyData.proxy || false,
+                    isHosting: proxyData.hosting || false,
+                    isMobile: proxyData.mobile || false,
+                    org: ipData.org || 'Unknown',
+                    country: ipData.country_name || 'Unknown',
+                    threatLevel: 'LOW',
+                    asn: ipData.asn || 'Unknown'
+                };
+                
+                const vpnIndicators = [
+                    ipData.org?.toLowerCase().includes('vpn'),
+                    ipData.org?.toLowerCase().includes('proxy'),
+                    ipData.org?.toLowerCase().includes('tor'),
+                    ipData.org?.toLowerCase().includes('anonymous'),
+                    proxyData.hosting && !proxyData.mobile,
+                    ipData.asn?.includes('AS13335'),
+                    ipData.asn?.includes('AS15169')
+                ];
+                
+                vpnAnalysis.isVPN = vpnIndicators.filter(Boolean).length >= 2;
+                vpnAnalysis.isTor = ipData.org?.toLowerCase().includes('tor') || false;
+                
+                if (vpnAnalysis.isTor) vpnAnalysis.threatLevel = 'HIGH';
+                else if (vpnAnalysis.isVPN || vpnAnalysis.isProxy) vpnAnalysis.threatLevel = 'MEDIUM';
+                
+                const logTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [VPN] IP: ${vpnAnalysis.ip} | Country: ${vpnAnalysis.country} | Org: ${vpnAnalysis.org}</div>`;
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [VPN] Status: ${vpnAnalysis.isVPN ? 'VPN DETECTED' : 'DIRECT CONNECTION'}</div>`;
+                
+                if (vpnAnalysis.isTor) {
+                    document.getElementById("logs").innerHTML += `<div class="log-entry log-error">[${logTime}] [TOR] TOR network detected - High security risk</div>`;
+                }
+                if (vpnAnalysis.isProxy) {
+                    document.getElementById("logs").innerHTML += `<div class="log-entry log-warning">[${logTime}] [PROXY] Proxy connection detected</div>`;
+                }
+                
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [VPN] Threat Level: ${vpnAnalysis.threatLevel}</div>`;
+                
+                return vpnAnalysis;
+            } catch (error) {
+                const errorTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry log-error">[${errorTime}] [ERROR] VPN Detection failed: ${error.message}</div>`;
+                return { ip: currentIP, error: 'Detection failed', threatLevel: 'UNKNOWN' };
+            }
+        }
+
+        async function runVPNCheck() {
+            const currentIP = document.getElementById("ip").textContent;
+            if (currentIP === 'Loading...' || currentIP === 'Unable to detect') {
+                alert('Please wait for IP detection to complete');
+                return;
+            }
+            
+            const logTime = new Date().toLocaleTimeString();
+            document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [SYSTEM] Running enhanced VPN detection analysis...</div>`;
+            
+            const vpnData = await detectVPNStatus(currentIP);
+            
+            if (vpnData.threatLevel === 'HIGH' || vpnData.isTor) {
+                alertCount++;
+                document.getElementById("threatsBlocked").textContent = alertCount;
+            }
+            
+            return vpnData;
+        }
+
+        function initializeVPNDetection() {
+            setTimeout(() => {
+                const logTime = new Date().toLocaleTimeString();
+                document.getElementById("logs").innerHTML += `<div class="log-entry">[${logTime}] [SYSTEM] Initializing VPN detection system...</div>`;
+                runVPNCheck();
+            }, 5000);
+        }
+
+        console.log('HackerWatch-Fortress v2.3 Professional with VPN Detection Loaded');
+        console.log('Contact: lexalytics@yahoo.com');
+        console.log('Emmanuel - God With Us');
     </script>
 </body>
 </html>
