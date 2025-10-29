@@ -1,27 +1,32 @@
 {
-  "name": "hackerwatch-fortress",
-  "version": "2.2.0",
-  "description": "Professional Cybersecurity Monitoring System",
+  "name": "hackerwatch-fortress-payment-system",
+  "version": "1.0.0",
+  "description": "Automatic payment webhook and serial number system for HackerWatch Fortress",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js",
-    "build": "echo 'No build step required'"
+    "dev": "nodemon server.js"
   },
   "dependencies": {
+    "nodemailer": "^6.9.8",
     "express": "^4.18.2",
-    "ws": "^8.14.2",
-    "axios": "^1.6.0"
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   },
   "engines": {
-    "node": "22.x"
+    "node": ">=18.x"
   },
   "keywords": [
-    "cybersecurity",
-    "monitoring",
-    "security",
-    "professional"
+    "payment",
+    "webhook",
+    "serial",
+    "licensing",
+    "crypto",
+    "paypal"
   ],
-  "author": "lexalytics@yahoo.com",
+  "author": "GMSRFC",
   "license": "MIT"
 }
