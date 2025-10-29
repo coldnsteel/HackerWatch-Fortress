@@ -1,9 +1,26 @@
 {
   "version": 2,
   "builds": [
-    { "src": "public/index.html", "use": "@vercel/static" }
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/public/index.html" }
-  ]
+    {
+      "src": "/api/payment-webhook",
+      "dest": "api/payment-webhook.js"
+    },
+    {
+      "src": "/api/validate-serial",
+      "dest": "api/validate-serial.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
