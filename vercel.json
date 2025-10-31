@@ -2,23 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "server.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
-    {
-      "src": "/api/payment-webhook",
-      "dest": "api/payment-webhook.js"
-    },
-    {
-      "src": "/api/validate-serial",
-      "dest": "api/validate-serial.js"
-    },
     {
       "src": "/(.*)",
       "dest": "server.js"
